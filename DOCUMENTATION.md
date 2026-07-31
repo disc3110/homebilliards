@@ -1,6 +1,6 @@
 # Home Billiards Website — Project Documentation
 
-**Version:** 1.1 · July 2026
+**Version:** 1.2 · July 2026
 **Maintainer:** Diego Solis-Cuevas  
 **Status:** Active — reflects all decisions made to date
 
@@ -85,9 +85,10 @@ Replace the current BigCommerce storefront at **homebilliards.ca** with a modern
 
 | Layer           | Technology                               | Notes                                                          |
 | --------------- | ---------------------------------------- | -------------------------------------------------------------- |
-| Storefront      | **Next.js** (TypeScript)                 | Deployed on Vercel                                             |
-| Admin panel     | **Next.js** (TypeScript)                 | Separate internal app deployed on Vercel                       |
-| Backend (BFF)   | **NestJS** (TypeScript)                  | Deployed on Railway; the only API used by storefront and admin |
+| Runtime         | **Node.js 22 + npm 10**                  | Pinned by `.nvmrc`, root engines, and the CI environment        |
+| Storefront      | **Next.js 16 + React 19** (TypeScript 5.9) | Deployed on Vercel                                           |
+| Admin panel     | **Next.js 16 + React 19** (TypeScript 5.9) | Separate internal app deployed on Vercel                     |
+| Backend (BFF)   | **NestJS 11** (TypeScript 5.9)           | Deployed on Railway; the only API used by storefront and admin |
 | Product catalog | **BigCommerce**                          | Existing store, already loaded with products                   |
 | Database        | **PostgreSQL** (Railway)                 | Quotes + manual metadata overrides — _not_ the product catalog |
 | Search          | **Algolia**                              | Indexed from BigCommerce via the NestJS app                    |
@@ -386,15 +387,20 @@ Content production: existing BigCommerce product content is kept and updated. Ne
 
 All endpoints are served by the NestJS BFF, versioned under `/v1/`.
 
-| Endpoint               | Method | Purpose                                           |
-| ---------------------- | ------ | ------------------------------------------------- |
-| `/v1/products`         | GET    | Product list (paginated, filterable)              |
-| `/v1/products/{slug}`  | GET    | Product detail                                    |
-| `/v1/categories`       | GET    | Category tree                                     |
-| `/v1/search`           | GET    | Search with filters (proxies/complements Algolia) |
-| `/v1/filters`          | GET    | Available filters for a category                  |
-| `/v1/quotes`           | POST   | Submit a quote request                            |
-| `/v1/checkout/session` | POST   | Create a checkout session                         |
+| Endpoint               | Method | Status | Purpose                                           |
+| ---------------------- | ------ | ------ | ------------------------------------------------- |
+| `/v1`                  | GET    | Implemented | API identity, version, environment, and health link |
+| `/v1/health`           | GET    | Implemented | Process liveness health check                   |
+| `/v1/health/ready`     | GET    | Implemented | Readiness check; external dependencies are added as integrations arrive |
+| `/v1/products`         | GET    | Planned | Product list (paginated, filterable)              |
+| `/v1/products/{slug}`  | GET    | Planned | Product detail                                    |
+| `/v1/categories`       | GET    | Planned | Category tree                                     |
+| `/v1/search`           | GET    | Planned | Search with filters (proxies/complements Algolia) |
+| `/v1/filters`          | GET    | Planned | Available filters for a category                  |
+| `/v1/quotes`           | POST   | Planned | Submit a quote request                            |
+| `/v1/checkout/session` | POST   | Planned | Create a checkout session                         |
+
+The storefront and admin each expose `/api/health` for their own Vercel deployment checks. All health responses use the shared runtime schema from `@home-billiards/contracts` and disable response caching.
 
 ### Design rules
 
@@ -720,8 +726,9 @@ Run per feature before deploy:
 | Phase                 | Scope                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
 | **0 — Preparation (complete)** | Monorepo, Vercel/Railway targets, demo reference status, Git workflow, and open-decision register confirmed |
-| **1 — MVP foundation (current)** | Application scaffolds, canonical contracts, environment validation, CI, and initial BigCommerce integration |
-| **1.1 — MVP experience** | Full sitemap, quote flow, Algolia search, BigCommerce catalog, Feedonomics-ready product data, GA4/PostHog |
+| **1 — MVP foundation (complete)** | Storefront/admin/backend scaffolds, shared runtime contracts and TypeScript config, environment examples, health checks, tests, builds, and CI |
+| **1.1 — Data and commerce integration (current)** | Canonical product contracts, BigCommerce mapping/read integration, persistence foundation, and fixture-backed API behavior |
+| **1.2 — MVP experience** | Full sitemap, quote flow, Algolia search, BigCommerce catalog, Feedonomics-ready product data, GA4/PostHog |
 | **1.5**               | Content enrichment across the catalog, GTIN/MPN sourcing, product highlights/spec backfill, mobile optimization pass |
 | **2**                 | Customer accounts, wishlists, product reviews, category/product FAQs                                     |
 | **2.5**               | Local inventory feed after Google Business Profile + reliable showroom stock data                        |
