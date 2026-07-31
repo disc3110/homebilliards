@@ -5,6 +5,35 @@ Everything already decided lives in [DOCUMENTATION.md](DOCUMENTATION.md). This d
 
 ---
 
+## Decision Checklist
+
+This table is the operating checklist. The detailed question and recommendation for each ID appear below. A decision is complete only after the answer has been recorded here and moved into `DOCUMENTATION.md`, `SEO_SPEC.md`, or `FEED_SPEC.md` as appropriate.
+
+| Done | ID | Owner | Priority | Needed before | Decision |
+| ---- | -- | ----- | -------- | ------------- | -------- |
+| [ ] | S1 | Shawn | High | Fulfillment UI, feed shipping fields | Customer-facing shipping policy |
+| [ ] | S2 | Shawn | Medium | Sale page and promotion QA | Launch sale/promotion behavior |
+| [ ] | S3 | Shawn | High | Quote workflow implementation | Notification recipients and response promise |
+| [ ] | S4 | Shawn | High | Visual implementation sign-off | Production logo and brand assets |
+| [ ] | J1 | Jordan | Medium | Technical SEO implementation | Pagination indexing |
+| [ ] | J2 | Jordan | High | PLP URL and filter implementation | Filtered URL indexing |
+| [ ] | J3 | Jordan | High | PDP routing and canonical rules | Variant URL strategy |
+| [ ] | J4 | Jordan | Critical | Production launch | Legacy URL redirect map |
+| [ ] | J5 | Jordan | Medium | Product metadata generation | Product title template |
+| [ ] | J6 | Jordan | Medium | Category content population | Category metadata ownership and priority |
+| [ ] | J7 | Jordan | High | Analytics implementation and launch | GA4 and Search Console status |
+| [ ] | J8 | Jordan | Low | Category SEO content refinement | Target keywords by category |
+| [ ] | F1 | Shawn + Jordan | High | Launch scope freeze | Feedonomics/GMC launch timing |
+| [ ] | F2 | Jordan + Engineering | High | Feed integration implementation | Feedonomics source model |
+| [ ] | F3 | Shawn + Jordan | Medium | Feed population and QA | GTIN/MPN sourcing ownership |
+| [ ] | F4 | Shawn + Jordan | Medium | PDP/review scope freeze | Reviews at launch or fast-follow |
+| [ ] | F5 | Shawn + Jordan | Low | Local inventory phase | Local inventory feed timing |
+| [ ] | T1 | Project lead + Shawn | High | Admin feature implementation | Admin MVP workflows, users, and permissions |
+
+**Does not block the first scaffold:** S1-S4, J1-J8, and F1-F5 can proceed in parallel while Engineering creates the three applications and shared contracts. T1 does not block creation of the admin application shell, but it blocks authenticated admin features.
+
+---
+
 ## For Shawn
 
 ### S1. What do we tell customers about shipping?
@@ -178,5 +207,24 @@ Jordan's feed/SEO planning doc recommends the review collection system being rea
 Should Home Billiards pursue Google local inventory listings ("in stock / on display in Vancouver") at launch or after launch?
 
 **Our suggestion:** fast-follow after launch. It depends on Google Business Profile, Merchant Center linkage, a confirmed `store_code`, and reliable showroom stock data.
+
+> **Your answer:**
+
+---
+
+## Technical / Admin Decisions
+
+### T1. Admin MVP workflows, users, and permissions
+
+The monorepo includes a dedicated admin panel, but its launch responsibilities need to be bounded before implementation.
+
+Please confirm:
+
+1. Which people need admin access at launch?
+2. Should the MVP admin handle quote status, assignment, internal notes, and customer follow-up?
+3. Which overrides may staff edit: SEO metadata, feed fields, category copy, FAQs, product type, CTA/fulfillment rules?
+4. Which roles are needed, for example administrator, sales, content/SEO, and read-only?
+
+**Our suggestion:** launch with the smallest useful scope: authenticated users, quote inbox/status/notes, and audited SEO/feed/content overrides. Keep direct catalog editing in BigCommerce and add broader workflow automation later.
 
 > **Your answer:**
