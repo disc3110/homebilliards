@@ -1,6 +1,6 @@
 # Home Billiards Website — Project Documentation
 
-**Version:** 1.0 · July 2026  
+**Version:** 1.1 · July 2026
 **Maintainer:** Diego Solis-Cuevas  
 **Status:** Active — reflects all decisions made to date
 
@@ -56,6 +56,17 @@ Replace the current BigCommerce storefront at **homebilliards.ca** with a modern
 3. **Canonical data only.** The frontend consumes one standardized product shape regardless of where the data comes from.
 4. **Progressive complexity.** Simple products stay simple to buy. Complexity appears only when the product requires it.
 
+### Phase 0 decisions
+
+| Decision | Confirmed direction |
+| -------- | ------------------- |
+| Repository | One monorepo containing the storefront, admin panel, backend, and shared packages |
+| Storefront hosting | Vercel |
+| Admin hosting | Separate Vercel project from the same monorepo |
+| Backend and database hosting | Railway |
+| Demo status | Visual and UX reference only; it is not the production codebase |
+| Git workflow | `feature/*` -> `dev` -> `main`; no routine development directly on `main` |
+
 ### Key contacts & facts
 
 |                    |                                             |
@@ -74,8 +85,9 @@ Replace the current BigCommerce storefront at **homebilliards.ca** with a modern
 
 | Layer           | Technology                               | Notes                                                          |
 | --------------- | ---------------------------------------- | -------------------------------------------------------------- |
-| Frontend        | **Next.js** (TypeScript)                 | Deployed on Vercel                                             |
-| Backend (BFF)   | **NestJS** (TypeScript)                  | Deployed on Railway; the only API the frontend talks to        |
+| Storefront      | **Next.js** (TypeScript)                 | Deployed on Vercel                                             |
+| Admin panel     | **Next.js** (TypeScript)                 | Separate internal app deployed on Vercel                       |
+| Backend (BFF)   | **NestJS** (TypeScript)                  | Deployed on Railway; the only API used by storefront and admin |
 | Product catalog | **BigCommerce**                          | Existing store, already loaded with products                   |
 | Database        | **PostgreSQL** (Railway)                 | Quotes + manual metadata overrides — _not_ the product catalog |
 | Search          | **Algolia**                              | Indexed from BigCommerce via the NestJS app                    |
@@ -91,6 +103,25 @@ Replace the current BigCommerce storefront at **homebilliards.ca** with a modern
 
 ## 3. System Architecture
 
+### Monorepo structure
+
+The production system lives in this repository. The demo remains in place as reference material and is not imported as a production application.
+
+```text
+/
+├── apps/
+│   ├── storefront/    # Customer-facing Next.js application
+│   ├── admin/         # Internal Next.js administration application
+│   └── backend/       # NestJS BFF and workers
+├── packages/
+│   ├── contracts/     # Canonical schemas, DTOs, and shared API types
+│   └── config/        # Shared TypeScript, lint, and test configuration
+├── DEMO/              # Read-only visual and UX reference
+└── *.md               # Living planning and implementation specifications
+```
+
+The baseline workspace manager is npm workspaces with one production lockfile at the repository root. The demo keeps its existing lockfile but is excluded from the production workspace. Additional shared packages are created only after two applications have a real shared need; the storefront and admin do not share a generic UI package by default because their interaction and visual requirements differ.
+
 ```
 BigCommerce ──────────┐            ┌────── Algolia
 (catalog + orders)    │            │       (search)
@@ -105,11 +136,13 @@ BigCommerce ──────────┐            ┌────── A
                      │        └────── Feedonomics ───► Google Merchant Center
                      │
                      │ REST (canonical schema only)
-                     ▼
-              ┌─────────────────────────┐
-              │ Next.js Frontend        │────► Stripe / hosted checkout
-              │ (Vercel)                │
-              └─────────────────────────┘
+             ┌───────┴───────────────────┐
+             ▼                           ▼
+┌─────────────────────────┐   ┌─────────────────────────┐
+│ Next.js Storefront      │   │ Next.js Admin          │
+│ (Vercel)                │   │ (Vercel, authenticated)│
+└────────────┬────────────┘   └─────────────────────────┘
+             └──────────────► Stripe / hosted checkout
 ```
 
 ### Responsibilities
@@ -123,11 +156,17 @@ BigCommerce ──────────┐            ┌────── A
 - Produces canonical feed/export data for Feedonomics when values are not safe to read directly from BigCommerce.
 - Validates every request and input; rate-limits public forms.
 
-**Next.js frontend:**
+**Next.js storefront:**
 
 - Renders the state returned by the backend.
 - Manages UI state, form validation, responsive layout, accessibility.
 - Never talks directly to BigCommerce, Stripe internals, or Cloudinary admin APIs.
+
+**Next.js admin panel:**
+
+- Provides authenticated internal workflows through the NestJS backend; it never writes directly to PostgreSQL or BigCommerce.
+- Manages the MVP operations approved in decision T1, expected to include quote handling and controlled SEO/feed/content overrides.
+- Uses a work-focused internal interface rather than copying the storefront design.
 
 ### Source-of-truth model
 
@@ -546,6 +585,8 @@ Property mapping per event is defined in the Analytics Implementation Spec (road
 
 The approved visual direction lives in the static demo: **`DEMO/HBSWebv2/`** (see `WEBSITE_HANDOFF.md` there for full detail). The demo's `index.html`, category pages, and Austin builder are the visual reference for the real build.
 
+The production storefront must reproduce the approved visual direction and interaction intent as closely as practical while rebuilding it with production Next.js components, canonical backend data, accessibility, responsive behavior, analytics, and tests. Demo code is not promoted or deployed directly. Assets may be reused only after confirming ownership, quality, and production suitability.
+
 ### Direction
 
 Modern, premium, warm, clean.
@@ -574,7 +615,7 @@ Logo source files and brand package come from Shawn **[Pending: S4]**.
 - The backend validates every request, input, and quote submission.
 - Rate limiting on all public forms.
 - HTTPS everywhere; secrets live in environment configs, never in code.
-- Admin functionality (future) requires authentication and authorization; role-based permissions planned.
+- The admin app requires authentication and server-enforced authorization before it can expose non-public data or write operations. Roles and MVP permissions are pending in decision T1.
 - PCI compliance via Stripe/BigCommerce hosted checkout — card data never touches our servers.
 
 ---
@@ -607,12 +648,19 @@ Optimized images (Cloudinary transforms) · lazy loading · CDN delivery · serv
 ## 16. Deployment
 
 ```
-GitHub (frontend repo)  → CI → Vercel   → Next.js
-GitHub (backend repo)   → CI → Railway  → NestJS + PostgreSQL
+GitHub monorepo
+├── apps/storefront  → CI → Vercel project: storefront
+├── apps/admin       → CI → Vercel project: admin
+└── apps/backend     → CI → Railway service + PostgreSQL
 ```
 
+- Each deployment project uses its application folder as its root and ignores changes that do not affect that application.
 - Fully automated deploys from GitHub; manual production deploys avoided.
-- Environments: local → preview (per-PR) → production.
+- Feature branches open pull requests into `dev`. `dev` is the integration branch and target for the shared non-production environment.
+- Releases use a reviewed pull request from `dev` into `main`. `main` is the stable production branch.
+- Emergency branches start from `main`, merge back into `main`, and are then reconciled into `dev`.
+- Environments: local -> feature preview where supported -> shared development/staging from `dev` -> production from `main`.
+- Production secrets and development secrets are isolated. Secrets live in Vercel, Railway, or GitHub environment settings and are never committed.
 - Launch requires: DNS cutover for homebilliards.ca, 301 redirect map live (J4), Search Console + GA4 verified, Feedonomics/GMC feed QA if product listings are active at launch, QA checklists passed.
 
 ---
@@ -637,7 +685,9 @@ Run per feature before deploy:
 
 | Phase                 | Scope                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| **1 — MVP (current)** | Full sitemap, quote flow, Algolia search, BigCommerce catalog, canonical schema, Feedonomics-ready product data, GA4/PostHog |
+| **0 — Preparation (complete)** | Monorepo, Vercel/Railway targets, demo reference status, Git workflow, and open-decision register confirmed |
+| **1 — MVP foundation (current)** | Application scaffolds, canonical contracts, environment validation, CI, and initial BigCommerce integration |
+| **1.1 — MVP experience** | Full sitemap, quote flow, Algolia search, BigCommerce catalog, Feedonomics-ready product data, GA4/PostHog |
 | **1.5**               | Content enrichment across the catalog, GTIN/MPN sourcing, product highlights/spec backfill, mobile optimization pass |
 | **2**                 | Customer accounts, wishlists, product reviews, category/product FAQs                                     |
 | **2.5**               | Local inventory feed after Google Business Profile + reliable showroom stock data                        |
@@ -652,7 +702,7 @@ Explicitly excluded: financing (decided against), blog/resources (not in MVP), p
 
 | Term                  | Meaning                                                                                                    |
 | --------------------- | ---------------------------------------------------------------------------------------------------------- |
-| **BFF**               | Backend for Frontend — the NestJS app; the only API the frontend consumes                                  |
+| **BFF**               | Backend for Frontend — the NestJS app; the only API consumed by the storefront and admin                   |
 | **Canonical schema**  | The single standardized product shape the frontend receives, regardless of data source                     |
 | **CTA**               | Call to Action — the primary button on a product (Add to Cart, Check Installation, …)                      |
 | **DMI**               | Dismantle, Move and Install — a service offering                                                           |
