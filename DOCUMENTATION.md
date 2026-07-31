@@ -165,8 +165,42 @@ BigCommerce ──────────┐            ┌────── A
 **Next.js admin panel:**
 
 - Provides authenticated internal workflows through the NestJS backend; it never writes directly to PostgreSQL or BigCommerce.
-- Manages the MVP operations approved in decision T1, expected to include quote handling and controlled SEO/feed/content overrides.
+- Manages quote handling and controlled SEO/feed/content overrides within the approved MVP permissions.
 - Uses a work-focused internal interface rather than copying the storefront design.
+
+### Admin MVP scope
+
+**Launch access:** every user has an individual account. Initial access is limited to the technical/project administrator, Shawn, Jordan, and specifically authorized sales staff. Shared accounts are prohibited. Accounts must support secure recovery and multi-factor authentication where the selected identity provider supports it.
+
+**Quote workflow:** the admin includes a quote inbox with assignment, internal notes, customer details, original request, change history, last-contact date, next action, and links to contact the customer. Supported statuses are `New`, `Contacted`, `In Progress`, `Won`, `Lost`, and `Closed`. The MVP records follow-up activity but does not attempt to replace a full CRM; automated email sequences, advanced pipelines, and calendar automation are later work.
+
+**Roles:**
+
+| Role | MVP permissions |
+| ---- | --------------- |
+| Administrator | Users, permissions, system configuration, audit history, all quote operations, and all approved overrides |
+| Sales | View and manage assigned/available quotes, status, assignment, internal notes, and follow-up activity |
+| Content/SEO | Edit SEO metadata, category copy, FAQs, and approved feed-enrichment fields |
+| Read-only | View permitted products, quotes, and history without write access; available when a real user requires it |
+
+Server-side authorization is mandatory; hiding a control in the interface is not sufficient access control.
+
+**Editable data:**
+
+| Data | MVP rule |
+| ---- | -------- |
+| SEO title and meta description | Editable by Content/SEO and Administrator |
+| Category copy and FAQs | Editable by Content/SEO and Administrator |
+| Feed description, highlights, and approved enrichment fields | Editable by Content/SEO and Administrator with feed validation |
+| Google Product Category | Selected from controlled values by Content/SEO or Administrator |
+| Feed exclusion | Administrator only, with confirmation and a required reason |
+| Canonical URL | Technical Administrator only, with validation and audit history |
+| Product type | Shawn/business Administrator or technical Administrator only, using controlled values |
+| CTA | Computed by the backend; no free-form admin edit |
+| Fulfillment rules | Shawn/business Administrator or technical Administrator only, using controlled values |
+| Price, inventory, SKU, variants, and commerce catalog data | Not editable in this admin; managed in BigCommerce |
+
+Every sensitive change records the user, timestamp, previous value, new value, and reason when required. SEO and feed edits must validate required fields, accepted values, and length/format constraints before publication.
 
 ### Source-of-truth model
 
@@ -615,7 +649,7 @@ Logo source files and brand package come from Shawn **[Pending: S4]**.
 - The backend validates every request, input, and quote submission.
 - Rate limiting on all public forms.
 - HTTPS everywhere; secrets live in environment configs, never in code.
-- The admin app requires authentication and server-enforced authorization before it can expose non-public data or write operations. Roles and MVP permissions are pending in decision T1.
+- The admin app requires individual authentication, server-enforced role authorization, and audit history before it can expose non-public data or write operations. MVP roles and permissions are defined in [Admin MVP scope](#admin-mvp-scope).
 - PCI compliance via Stripe/BigCommerce hosted checkout — card data never touches our servers.
 
 ---
