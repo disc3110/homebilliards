@@ -1,0 +1,7 @@
+DEMO/
+archive/
+node_modules/
+.next/
+dist/
+coverage/
+*.docx

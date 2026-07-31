@@ -1,0 +1,46 @@
+{
+  "name": "home-billiards",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Home Billiards storefront, admin, backend, and shared packages",
+  "packageManager": "npm@10.8.2",
+  "engines": {
+    "node": ">=22.13.0",
+    "npm": ">=10.8.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "postcss": "8.5.25",
+    "sharp": "0.35.3"
+  },
+  "overrides": {
+    "eslint": "$eslint",
+    "postcss": "$postcss",
+    "sharp": "$sharp"
+  },
+  "scripts": {
+    "dev": "npm run dev:storefront",
+    "dev:storefront": "npm run dev --workspace @home-billiards/storefront",
+    "dev:admin": "npm run dev --workspace @home-billiards/admin",
+    "dev:backend": "npm run dev --workspace @home-billiards/backend",
+    "build": "npm run build:contracts && npm run build:backend && npm run build:storefront && npm run build:admin",
+    "build:contracts": "npm run build --workspace @home-billiards/contracts",
+    "build:backend": "npm run build --workspace @home-billiards/backend",
+    "build:storefront": "npm run build --workspace @home-billiards/storefront",
+    "build:admin": "npm run build --workspace @home-billiards/admin",
+    "lint": "npm run lint --workspaces --if-present",
+    "typecheck": "npm run build:contracts && npm run typecheck --workspace @home-billiards/backend && npm run typecheck --workspace @home-billiards/storefront && npm run typecheck --workspace @home-billiards/admin",
+    "test": "npm run build:contracts && npm run test --workspace @home-billiards/contracts && npm run test --workspace @home-billiards/backend",
+    "format": "prettier --write \"apps/**/*.{ts,tsx,css,json,mjs}\" \"packages/**/*.{ts,json,mjs}\" \".github/**/*.{yml,yaml}\" \"*.json\"",
+    "format:check": "prettier --check \"apps/**/*.{ts,tsx,css,json,mjs}\" \"packages/**/*.{ts,json,mjs}\" \".github/**/*.{yml,yaml}\" \"*.json\"",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "eslint": "10.8.0",
+    "prettier": "^3.9.6"
+  }
+}

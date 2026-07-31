@@ -1,0 +1,83 @@
+:root {
+  color-scheme: light;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #f6f6f3;
+  color: #171717;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+.shell {
+  min-height: 100vh;
+}
+
+.site-header {
+  align-items: center;
+  background: #ffffff;
+  border-bottom: 1px solid #deded9;
+  display: flex;
+  justify-content: space-between;
+  min-height: 64px;
+  padding: 0 32px;
+}
+
+.wordmark {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.environment,
+.eyebrow {
+  color: #62625d;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.foundation-status {
+  margin: 0 auto;
+  max-width: 1040px;
+  padding: 96px 32px;
+}
+
+.foundation-status h1 {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 48px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.08;
+  margin: 16px 0;
+  max-width: 720px;
+}
+
+.foundation-status p:last-child {
+  color: #51514d;
+  font-size: 18px;
+  line-height: 1.6;
+  max-width: 620px;
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+    justify-content: center;
+    padding: 12px 20px;
+  }
+
+  .foundation-status {
+    padding: 64px 20px;
+  }
+
+  .foundation-status h1 {
+    font-size: 40px;
+  }
+}
