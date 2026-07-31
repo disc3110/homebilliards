@@ -79,6 +79,7 @@ Replace the current BigCommerce storefront at **homebilliards.ca** with a modern
 | Product catalog | **BigCommerce**                          | Existing store, already loaded with products                   |
 | Database        | **PostgreSQL** (Railway)                 | Quotes + manual metadata overrides — _not_ the product catalog |
 | Search          | **Algolia**                              | Indexed from BigCommerce via the NestJS app                    |
+| Product feeds   | **Feedonomics → Google Merchant Center** | Shopping/free-listing feeds; transforms canonical + commerce data |
 | Payments        | **Stripe** / BigCommerce hosted checkout | Existing Stripe account                                        |
 | Media           | **Cloudinary**                           | Existing account                                               |
 | Analytics       | **GA4 + PostHog**                        | All events through one internal `track()` helper               |
@@ -99,9 +100,12 @@ BigCommerce ──────────┐            ┌────── A
               │  · canonical mapping    │     (quotes, overrides)
               │  · business rules       │
               │  · CTA computation      │
-              └───────────┬─────────────┘
-                          │ REST (canonical schema only)
-                          ▼
+              │  · feed/search exports  │
+              └──────┬────────┬─────────┘
+                     │        └────── Feedonomics ───► Google Merchant Center
+                     │
+                     │ REST (canonical schema only)
+                     ▼
               ┌─────────────────────────┐
               │ Next.js Frontend        │────► Stripe / hosted checkout
               │ (Vercel)                │
@@ -116,6 +120,7 @@ BigCommerce ──────────┐            ┌────── A
 - Computes all business rules: CTA, fulfillment messaging, quote-required state.
 - Stores and processes quote submissions.
 - Keeps the Algolia index in sync.
+- Produces canonical feed/export data for Feedonomics when values are not safe to read directly from BigCommerce.
 - Validates every request and input; rate-limits public forms.
 
 **Next.js frontend:**
@@ -124,6 +129,17 @@ BigCommerce ──────────┐            ┌────── A
 - Manages UI state, form validation, responsive layout, accessibility.
 - Never talks directly to BigCommerce, Stripe internals, or Cloudinary admin APIs.
 
+### Source-of-truth model
+
+| System | Owns | Does not own |
+| ------ | ---- | ------------ |
+| BigCommerce | Product IDs, SKUs, product names, brands, category assignments, prices, sale prices, inventory, variants, modifiers, purchasability, carts, checkout, orders, and catalog images | Website-specific CTA logic, quote workflow rules, canonical projection logic, Algolia ranking logic |
+| NestJS BFF | Canonical product shape, product type classification, CTA computation, fulfillment messaging, quote-required state, canonical URL resolution, structured-data projection, Algolia payloads, and feed enrichment exports | Raw catalog truth, final checkout pricing, card payment handling |
+| PostgreSQL | Quote/contact/service submissions, manual SEO/feed/content overrides, category copy and FAQ overrides, redirect map records if not managed elsewhere, and audit trails | Live product catalog, live price, live inventory, checkout totals |
+| Feedonomics | Product-feed transformations, Google product category mapping, feed-title construction, URL remapping at cutover, feed formatting, and Google Merchant Center delivery | Original product truth, checkout truth, website business rules |
+
+**Divergence rule:** page-visible data, JSON-LD structured data, Algolia records, Feedonomics/GMC feed rows, and checkout/cart data must be generated from the same BigCommerce + BFF override sources. Price and availability must match the PDP and checkout. Manual edits belong in BigCommerce or the BFF override layer, not as one-off edits inside downstream tools.
+
 ### Architecture rules
 
 | Rule                             | Meaning                                                                                                                  |
@@ -131,6 +147,7 @@ BigCommerce ──────────┐            ┌────── A
 | Canonical schema is the contract | Shared TypeScript types define what a Product looks like; both apps depend on those types                                |
 | BigCommerce is replaceable       | All BigCommerce-specific code stays behind the mapping layer; swapping the data source later must not touch the frontend |
 | Backend precomputes `cta`        | The frontend renders `cta` as a button; it never maps productType/stock to an action itself                              |
+| Downstream projections agree     | Storefront, structured data, Algolia, Feedonomics, GMC, and checkout must not disagree on price, availability, URL, or identity |
 | Graceful degradation             | Every external dependency has a defined failure behavior (see [Performance](#15-performance))                            |
 
 ---
@@ -154,6 +171,23 @@ Products are classified by **how customers buy them**, not by inventory category
 - **Furniture Product** — large items that may need delivery planning; installation optional.
 - **Install Required** — highest-value products; delivery planning, installation scheduling, and often consultation before purchase. All pool tables use "Check Installation" in the MVP.
 - **Service** — no physical inventory; starts a workflow that staff reviews and schedules. All services share one quote workflow, distinguished by a `serviceType` field.
+
+### Commerce category map
+
+Shawn and Jordan's July 2026 product/URL planning map defines the working category groups and the most important product attributes for each group. These category names drive URL planning, navigation, filters, product specs, Algolia facets, and Feedonomics `product_type` paths.
+
+| Group | Product categories | Important attributes |
+| ----- | ------------------ | -------------------- |
+| Billiards | Pool Tables; Pool Cues; Pool Cue Cases; Pool Table Felt; Pool Cue Racks, Holders & Storage; Pool Balls; Pool Table Covers; Billiard Accessories | Price, brand, material type, style, size, features, usage, availability, cue size, cue weight, wood type, number of pieces, colour, shell type, material/texture, storage capacity, finish/material, accessory type |
+| Ping Pong | Ping Pong Tables; Ping Pong Paddles; Ping Pong Robots; Ping Pong Table Covers; Ping Pong Accessories | Price, brand, colour, features, grip type |
+| BBQ & Cooking | Traeger Smokers; Pizza Ovens; Sauces & Spices; Wood Pellets; Grill & BBQ Accessories | Price, brand, series, size, features, portability, fuel type, dietary options, accessory type |
+| Foosball | Foosball Tables; Foosball Accessories | Price, brand, material/finish, style, usage, colour, features |
+| Darts | Dartboards; Darts; Dart Board Cabinets; Dart Flights; Dart Shafts; Dart Accessories | Price, brand, features, tip type, weight, material, colour, cabinet material/finish, accessory type |
+| Air Hockey | Air Hockey Tables; Air Hockey Accessories | Price, brand, material/finish, style, usage, colour, features |
+| Other Games | Board Games; Cards; Dice; Poker Tables; Poker Chips; Poker Accessories; Shuffleboard Tables; Shuffleboard Accessories; Sports; Misc. Games | Price, brand, material/finish, size, colour, features, shuffleboard style, shuffleboard usage |
+| Furniture | Game Room Furniture | Price, brand, setting, material/finish, colour |
+
+**Rule:** the exact storefront navigation can group these categories for usability, but the canonical category tree must retain enough structure to power filters, category pages, internal linking, search facets, and feed taxonomy mapping.
 
 ### Fulfillment States
 
@@ -192,60 +226,84 @@ Every product exposed by the API follows this shape, regardless of source:
 {
   "id": "uuid",
   "sku": "HB-001",
+  "bigCommerceProductId": 123,
+  "bigCommerceVariantId": 456,
   "slug": "legacy-oak-8ft",
+  "canonicalUrl": "https://homebilliards.ca/pool-tables/legacy-oak-8ft",
   "productType": "install_required",
   "category": "pool-tables",
+  "categoryPath": ["Billiards", "Pool Tables"],
   "brand": "Legacy",
   "name": "Legacy Oak Pool Table",
+  "feedTitle": "Legacy Oak 8ft Pool Table",
   "shortDescription": "…",
   "longDescription": "…",
+  "productHighlights": [],
   "price": 4999,
+  "salePrice": null,
+  "currency": "CAD",
   "stockStatus": "IN_STOCK",
+  "merchantAvailability": "in_stock",
   "fulfillmentType": "LOCAL_STOCK",
   "leadTime": null,
   "installationRequired": true,
   "quoteRequired": false,
   "cta": "CHECK_INSTALLATION",
+  "identifiers": { "gtin": null, "mpn": "LEG-OAK-8", "identifierExists": true },
   "images": [{ "url": "…", "role": "hero", "alt": "…" }],
   "variants": [],
-  "specifications": {},
-  "seo": { "metaTitle": "…", "metaDescription": "…", "searchTitle": "…" }
+  "specifications": [],
+  "seo": { "metaTitle": "…", "metaDescription": "…", "searchTitle": "…" },
+  "feed": { "googleProductCategory": null, "productType": "Billiards > Pool Tables" },
+  "reviews": { "reviewCount": 0, "ratingValue": null }
 }
 ```
 
 ### Field groups
 
-| Group          | Fields                                                                                | Notes                                           |
-| -------------- | ------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| Identity       | `id`, `sku`, `slug`                                                                   | `slug` is the URL segment                       |
-| Classification | `productType`, `category`, `brand`                                                    | drives behavior and navigation                  |
-| Content        | `name`, `shortDescription`, `longDescription`                                         | see [SEO](#11-seo) for usage rules              |
-| Pricing        | `price`, variant `priceAdjustment`                                                    |                                                 |
-| Fulfillment    | `stockStatus`, `fulfillmentType`, `leadTime`, `installationRequired`, `quoteRequired` | structured, never plain text                    |
-| Action         | `cta`                                                                                 | precomputed by backend                          |
-| Media          | `images[]` with `{ url, role, alt }`                                                  | roles: `hero`, `gallery`, `swatch`, `lifestyle` |
-| Search         | `searchTitle`, synonyms, keywords                                                     | feeds Algolia                                   |
-| SEO            | `metaTitle`, `metaDescription`                                                        |                                                 |
+| Group | Fields | MVP status | Likely source |
+| ----- | ------ | ---------- | ------------- |
+| Identity | `id`, `sku`, `slug`, `canonicalUrl`, `bigCommerceProductId`, `bigCommerceVariantId` | Required | BigCommerce + NestJS mapping |
+| Titles and descriptions | `name`, `feedTitle`, `searchTitle`, `shortDescription`, `longDescription`, `feedDescription`, `productHighlights` | Required: `name`, `feedTitle`, `searchTitle`, `shortDescription`, `longDescription`; optional: highlights/feed description | BigCommerce + PostgreSQL overrides |
+| Pricing | `price`, `salePrice`, `compareAtPrice`, `currency`, `taxIncluded`, variant `priceAdjustment` | Required: `price`, `currency`; optional: sale/compare fields | BigCommerce |
+| Availability | `stockStatus`, `merchantAvailability`, `inventoryTracked`, `quantity`, `preorder`, `backorder` | Required: `stockStatus`, `merchantAvailability`; optional: quantity/order flags | BigCommerce + NestJS mapping |
+| Brand and identifiers | `brand`, `gtin`, `mpn`, `identifierExists`, `condition`, `countryOfOrigin` | Required: `brand`, `condition`; optional MVP: GTIN/MPN/country | BigCommerce custom fields/metafields + supplier data |
+| Variants | `variants[]`, `itemGroupId`, `variantOptions`, `modifierOptions`, `selectedOptionLabels` | Required where products have variants/options | BigCommerce + NestJS |
+| Media | `images[]`, `imageLink`, `additionalImageLinks`, `videoUrl` | Required: primary image + alt text; reserved: video | BigCommerce/Cloudinary + overrides |
+| Structured specifications | `specifications[] { section, name, value }`, `roomSizeRequired`, `includedItems`, dimensions, weight, warranty | Required where applicable to PDP; optional MVP for full backfill | BigCommerce custom fields/metafields + overrides |
+| Merchandising | `badges`, `madeInCanada`, `customLabels`, `newArrival`, `sale`, category-specific filter fields | Optional MVP except categories already in nav | BigCommerce + PostgreSQL overrides |
+| SEO | `metaTitle`, `metaDescription`, `searchTitle`, `canonical`, `breadcrumbs`, Open Graph fields, JSON-LD projection | Required | NestJS + overrides |
+| Feed data | `feedTitle`, `feedDescription`, `googleProductCategory`, `productType`, `shippingLabel`, `returnPolicyLabel`, `promotionId`, `feedExcluded` | Required only for products sent to GMC; designed in MVP | BigCommerce + NestJS export + Feedonomics rules |
+| Reviews | `reviewCount`, `ratingValue`, `reviews[]`, `reviewProvider` | Reserved for later unless review system is approved for launch | Review provider or PostgreSQL |
+| Fulfillment | `fulfillmentType`, `leadTime`, `installationRequired`, `quoteRequired`, `cta`, `shippingPromise` | Required except `shippingPromise` | NestJS business rules |
 
 ### Variants
 
-Products expose zero or more variants (cloth color, size, finish, cue weight). Variants inherit the parent and expose only differing fields (`id`, `name`, `sku`, `priceAdjustment`, `isAvailable`).
+Products expose zero or more variants (cloth color, size, finish, cue weight). Variants inherit the parent and expose only differing fields (`id`, `name`, `sku`, `priceAdjustment`, `isAvailable`, `selectedOptions`, and feed attributes when the variant is sent to GMC).
 
 Variant URLs: **[Pending: Jordan — J3]**. Dev recommendation is one URL per product with variants as client-side state.
 
+Feed variant grouping is independent from website variant URLs. A product may use one PDP URL on the website while Feedonomics submits separate variant rows grouped by `itemGroupId`.
+
 ### Publishing rules
 
-A product must not be published without: ID, SKU, product type, category, name, price, stock status, fulfillment type, primary image, and slug. Incomplete products stay unpublished.
+A product must not be published without: ID, SKU, product type, category, name, feed title, price, currency, stock status, merchant availability, fulfillment type, primary image with alt text, canonical URL, and slug. Incomplete products stay unpublished.
 
-### Content fields (three descriptions)
+Products sent to Google Merchant Center must also have every required feed field from [FEED_SPEC.md](FEED_SPEC.md). Feed values must match the visible PDP, JSON-LD, and checkout/cart behavior.
 
-| Field              | Length                         | Used in                                                      |
-| ------------------ | ------------------------------ | ------------------------------------------------------------ |
-| `shortDescription` | 1–2 sentences (~160 chars)     | Product cards, meta description, search snippets, Open Graph |
-| `longDescription`  | 3–6 paragraphs, HTML-safe      | PDP body only                                                |
-| `searchTitle`      | 60–70 chars, keyword-optimized | `<title>` tag, Algolia index                                 |
+### Content fields
 
-Rules: `shortDescription` is unique per product and never a truncation of `longDescription`. `searchTitle` is generated by template with manual override capability (overrides always win and survive re-syncs).
+| Field | Length | Used in |
+| ----- | ------ | ------- |
+| `name` | Clean display name | H1, product cards, customer-facing product identity |
+| `feedTitle` | Up to 150 chars | Feedonomics/GMC product title; clean product name, not SEO title |
+| `shortDescription` | 1–2 sentences (~160 chars) | Product cards, meta description, search snippets, Open Graph |
+| `longDescription` | 3–6 paragraphs, HTML-safe | PDP body only |
+| `feedDescription` | Up to GMC limits | Product facts only for feeds; no shipping promises, promo copy, store name, or competitor mentions |
+| `searchTitle` | 60–70 chars, keyword-optimized | `<title>` tag, Algolia index |
+| `productHighlights` | 2-10 short factual bullets | PDP bullets, Feedonomics `product_highlight`, AI-answer extraction |
+
+Rules: `shortDescription` is unique per product and never a truncation of `longDescription`. `searchTitle` is generated by template with manual override capability (overrides always win and survive re-syncs). `feedTitle` is separate from `searchTitle` and should not contain promo copy, keyword stuffing, or shipping claims.
 
 Content production: existing BigCommerce product content is kept and updated. New descriptions are AI-assisted with human review; Jordan has override authority on `searchTitle` and `shortDescription`.
 
@@ -294,8 +352,12 @@ A full OpenAPI specification is the next documentation deliverable (see [DECISIO
 /bbq/[slug]                          PDP
 /foosball                            PLP
 /foosball/[slug]                     PDP
-/games                               PLP — contents to confirm [Pending: Shawn — S6]
+/air-hockey                          PLP
+/air-hockey/[slug]                   PDP
+/games                               PLP — board games, cards, dice, poker, shuffleboard, sports, misc. games
 /games/[slug]                        PDP
+/furniture                           PLP — game room furniture
+/furniture/[slug]                    PDP
 /services                            Services landing
 /services/installation               Service page + quote form
 /services/table-moving               Service page + quote form
@@ -317,7 +379,7 @@ No blog/resources section in the MVP.
 ### Header / navigation
 
 - Logo left; search and Contact Us centered above the nav.
-- Nav: Billiards, Ping Pong, BBQ, Foosball, Darts, Games, Commercial, New Arrivals, Sale, Made in Canada.
+- Nav: Billiards, Ping Pong, BBQ, Foosball, Darts, Air Hockey, Games, Furniture, Commercial, New Arrivals, Sale, Made in Canada.
 - Header is shared across all pages — a change to it applies everywhere.
 
 ---
@@ -413,7 +475,7 @@ Relevance beats exact text match.
 
 `searchTitle`, `name`, `brand`, `category`, `sku`, synonyms, keywords, price, `stockStatus`, primary image URL.
 
-Category facets depend on the final category structure **[Pending: Shawn — S6]**.
+Category facets come from the approved commerce category map plus product-specific attributes returned by the backend.
 
 ---
 
@@ -436,6 +498,7 @@ Category facets depend on the final category structure **[Pending: Shawn — S6]
 | Schema                     | Page     | Key fields                                                |
 | -------------------------- | -------- | --------------------------------------------------------- |
 | `Product`                  | PDP      | name, brand, sku, price, availability, image, description |
+| `AggregateRating` / `Review` | PDP    | rendered only when at least one real, visible product review exists |
 | `BreadcrumbList`           | PDP      | category hierarchy + slug                                 |
 | `Organization`             | all      | business name, address, phone, URL                        |
 | `WebSite` + `SearchAction` | homepage | enables Google sitelinks searchbox                        |
@@ -453,6 +516,12 @@ Descriptive, never just the filename.
 - **301 redirect map from the current live site — required before launch** (J4)
 - `searchTitle` template approval (J5)
 - GA4 / Search Console properties (J7)
+
+### Product feeds
+
+Feedonomics is the transform layer for Google Merchant Center feeds. The backend and BigCommerce provide source fields; Feedonomics formats, maps, and exports them. Required feed fields, variant grouping, Google taxonomy mapping, local inventory timing, and QA rules live in [FEED_SPEC.md](FEED_SPEC.md).
+
+Feed-critical launch rule: `price`, `salePrice`, availability, product URLs, product images, and identifiers must not diverge between BigCommerce, the PDP, Product JSON-LD, Feedonomics, Google Merchant Center, and checkout.
 
 ---
 
@@ -528,6 +597,7 @@ Optimized images (Cloudinary transforms) · lazy loading · CDN delivery · serv
 | --------------- | --------------------------------------------------------------- |
 | BigCommerce     | Browse from cache where possible; disable ordering; notify user |
 | Algolia         | Fall back to category browsing                                  |
+| Feedonomics/GMC | Storefront remains live; feed updates pause until export is healthy |
 | Cloudinary      | Placeholder images                                              |
 | Stripe          | Disable checkout; explain payment issue                         |
 | PostgreSQL      | Friendly error on quote forms; retry mechanism                  |
@@ -543,7 +613,7 @@ GitHub (backend repo)   → CI → Railway  → NestJS + PostgreSQL
 
 - Fully automated deploys from GitHub; manual production deploys avoided.
 - Environments: local → preview (per-PR) → production.
-- Launch requires: DNS cutover for homebilliards.ca, 301 redirect map live (J4), Search Console + GA4 verified, QA checklists passed.
+- Launch requires: DNS cutover for homebilliards.ca, 301 redirect map live (J4), Search Console + GA4 verified, Feedonomics/GMC feed QA if product listings are active at launch, QA checklists passed.
 
 ---
 
@@ -559,16 +629,19 @@ Run per feature before deploy:
 
 **Quote forms** — validation works · success confirmation shown · database record created · staff notification sent.
 
+**Feeds** — required attributes present · product URLs resolve · image URLs crawlable · price and availability match PDP/checkout · variants grouped correctly · overridden SEO/feed fields visible to Feedonomics.
+
 ---
 
 ## 18. Roadmap
 
 | Phase                 | Scope                                                                                                   |
 | --------------------- | ------------------------------------------------------------------------------------------------------- |
-| **1 — MVP (current)** | Everything in this document: full sitemap, quote flow, Algolia search, BigCommerce catalog, GA4/PostHog |
-| **1.5**               | Content enrichment across the catalog (AI-assisted descriptions with review), mobile optimization pass  |
-| **2**                 | Customer accounts, wishlists, product reviews                                                           |
-| **3**                 | Advanced configurators, appointment scheduling                                                          |
+| **1 — MVP (current)** | Full sitemap, quote flow, Algolia search, BigCommerce catalog, canonical schema, Feedonomics-ready product data, GA4/PostHog |
+| **1.5**               | Content enrichment across the catalog, GTIN/MPN sourcing, product highlights/spec backfill, mobile optimization pass |
+| **2**                 | Customer accounts, wishlists, product reviews, category/product FAQs                                     |
+| **2.5**               | Local inventory feed after Google Business Profile + reliable showroom stock data                        |
+| **3**                 | Advanced configurators, appointment scheduling, videos, Merchant promotions                              |
 | **4**                 | AI-powered search, personalized recommendations, customer dashboards, advanced merchandising            |
 
 Explicitly excluded: financing (decided against), blog/resources (not in MVP), product comparison (phase 2+).
@@ -584,6 +657,10 @@ Explicitly excluded: financing (decided against), blog/resources (not in MVP), p
 | **CTA**               | Call to Action — the primary button on a product (Add to Cart, Check Installation, …)                      |
 | **DMI**               | Dismantle, Move and Install — a service offering                                                           |
 | **Fulfillment state** | How a product reaches the customer (In Stock, Special Order, Quote Required, …)                            |
+| **Feedonomics**       | Product feed transformation layer used to send commerce data to Google Merchant Center                     |
+| **GMC**               | Google Merchant Center — receives product feeds for Shopping ads and free product listings                  |
+| **GTIN / MPN**        | Manufacturer identifiers used by product feeds; never fabricate missing identifiers                         |
+| **Item group ID**     | Feed field used to group product variants under one product family                                         |
 | **PLP**               | Product Listing Page — a category page with a product grid                                                 |
 | **PDP**               | Product Detail Page — a single product's page                                                              |
 | **Product Type**      | Behavioral classification that determines a product's journey (Standard SKU, Install Required, Service, …) |
@@ -602,6 +679,7 @@ Explicitly excluded: financing (decided against), blog/resources (not in MVP), p
 | **DOCUMENTATION.md** (this file)   | The single reference for everything decided                                          |
 | [DECISIONS.md](DECISIONS.md)       | Only open questions — meeting doc for Shawn & Jordan                                 |
 | [SEO_SPEC.md](SEO_SPEC.md)         | Field-by-field SEO mapping, description rules, per-page checklists                   |
+| [FEED_SPEC.md](FEED_SPEC.md)       | Feedonomics/GMC feed mapping, source rules, variant grouping, and feed QA            |
 | `DEMO/HBSWebv2/WEBSITE_HANDOFF.md` | Demo detail: page-by-page state, asset folders, cloth color tables, builder behavior |
 
 **Archive** (`archive/` — history, do not use for current work):

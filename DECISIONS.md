@@ -1,7 +1,7 @@
 # Open Decisions — Meeting Doc for Shawn & Jordan
 
-**For:** the July 9 meeting · **Prepared by:** Diego  
-Everything already decided lives in [DOCUMENTATION.md](DOCUMENTATION.md). This doc is only what's still open — 6 things for Shawn, 8 for Jordan. Each one says why we're asking and what we suggest. Write your answer right below each question; short answers are fine.
+**For:** Shawn, Jordan, and implementation planning · **Prepared by:** Diego
+Everything already decided lives in [DOCUMENTATION.md](DOCUMENTATION.md). This doc is only what's still open. Each one says why we're asking and what we suggest. Write your answer right below each question; short answers are fine.
 
 ---
 
@@ -43,16 +43,6 @@ When a customer asks for a quote (pool table, installation, moving, etc.), the s
 We need the logo source files (ideally SVG/vector) and anything else you have — brand colors, fonts, old design files. Whatever exists is helpful, even if it's just the logo.
 
 > **Where can we get them:**
-
----
-
-### S6. What goes in the "Games" category?
-
-The site will have a Games section. Which products live there? Air hockey? Shuffleboard? Arcade/game tables? Board games?
-
-Related: should **shuffleboard** be inside Games, or big enough to be its own category page?
-
-> **Your answer:**
 
 ---
 
@@ -115,6 +105,16 @@ You'll be able to override any product's title by hand, and your edits never get
 
 ---
 
+### J6. Category meta descriptions and category copy
+
+Who writes the category-level meta descriptions and short PLP intro copy, and in what order should categories be prioritized?
+
+The new category map includes Billiards, Ping Pong, BBQ & Cooking, Foosball, Darts, Air Hockey, Other Games, and Furniture. We need enough category copy for unique PLP titles/descriptions and future FAQ/content blocks.
+
+> **Your answer:**
+
+---
+
 ### J7. Google Analytics & Search Console — do they exist?
 
 Is there already a GA4 property and Search Console verification for homebilliards.ca? If yes, we'll reuse them (keeps the history — and we need Search Console for J4). If not, we'll create them.
@@ -126,5 +126,57 @@ Is there already a GA4 property and Search Console verification for homebilliard
 ### J8. Target keyword per category _(nice to have)_
 
 One line per category — the main search phrase each page should aim for (e.g. Pool Tables → "pool tables vancouver"). Helps us write headings and titles that match. Can be delivered bit by bit, no rush.
+
+> **Your answer:**
+
+---
+
+## Joint / Feed Decisions
+
+### F1. Feedonomics + Google Merchant Center launch scope
+
+Will Google Shopping/free listings launch at the same time as the new site, or after the storefront is live?
+
+**Our suggestion:** make the product schema Feedonomics-ready during MVP, but treat live GMC feed launch as a launch checklist item only if the required accounts, Feedonomics setup, and feed QA are ready.
+
+> **Your answer:**
+
+---
+
+### F2. Feedonomics data source
+
+Should Feedonomics read BigCommerce directly, a NestJS export, or a hybrid feed?
+
+**Our suggestion:** hybrid. Let Feedonomics read checkout-sensitive commerce data from BigCommerce, and merge a NestJS enrichment/override export for canonical URLs, SEO/feed overrides, product type paths, specs, and custom labels.
+
+> **Your answer:**
+
+---
+
+### F3. Product identifiers: GTIN and MPN sourcing
+
+Who will collect manufacturer GTINs and MPNs from suppliers, and which product groups should be prioritized first?
+
+**Our suggestion:** start with Traeger, cues/darts/accessories that likely have manufacturer identifiers, then high-value tables where suppliers can provide reliable MPNs. Never fabricate GTINs or MPNs.
+
+> **Owner / plan:**
+
+---
+
+### F4. Reviews at launch or schema-ready only
+
+Jordan's feed/SEO planning doc recommends the review collection system being ready at launch, but reviews add operational and engineering scope.
+
+**Our suggestion:** reserve review fields and implement valid conditional JSON-LD in MVP. Launch review collection as a fast-follow unless Shawn/Jordan confirm reviews are a launch requirement.
+
+> **Your answer:**
+
+---
+
+### F5. Local inventory feed timing
+
+Should Home Billiards pursue Google local inventory listings ("in stock / on display in Vancouver") at launch or after launch?
+
+**Our suggestion:** fast-follow after launch. It depends on Google Business Profile, Merchant Center linkage, a confirmed `store_code`, and reliable showroom stock data.
 
 > **Your answer:**
