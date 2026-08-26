@@ -19,6 +19,9 @@ next-env.d.ts
 .vercel/
 .railway/
 
+# Generated API inspection snapshots (may contain catalog data)
+artifacts/bigcommerce-inspection/
+
 # Editors
 .idea/
 .vscode/
