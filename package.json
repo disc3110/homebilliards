@@ -37,6 +37,7 @@
     "inspect:bigcommerce": "node scripts/inspect-bigcommerce.mjs",
     "audit:bigcommerce": "node scripts/audit-bigcommerce-catalog.mjs",
     "validate:storefront-plan": "node scripts/validate-storefront-planning.mjs",
+    "validate:storefront-contracts": "npm run lint --workspace @home-billiards/contracts && npm run typecheck --workspace @home-billiards/contracts && npm run build --workspace @home-billiards/contracts && npm run test --workspace @home-billiards/contracts",
     "format": "prettier --write \"apps/**/*.{ts,tsx,css,json,mjs}\" \"packages/**/*.{ts,json,mjs}\" \".github/**/*.{yml,yaml}\" \"*.json\"",
     "format:check": "prettier --check \"apps/**/*.{ts,tsx,css,json,mjs}\" \"packages/**/*.{ts,json,mjs}\" \".github/**/*.{yml,yaml}\" \"*.json\"",
     "check": "npm run format:check && npm run lint && npm run typecheck && npm run test && npm run build"

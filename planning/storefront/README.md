@@ -23,6 +23,7 @@ Jordan's directory is the authority for the intended public taxonomy. BigCommerc
 - `launch-scope.md`: proposed pilot, V1, and later rollout boundaries.
 - `pilot-products.md`: representative products and journeys for the first vertical slice.
 - `decision-log.md`: locked directions, proposals, and approvals still required.
+- `step-2-contracts.md`: canonical storefront contracts, option behavior, publishing gates, adapter boundary, and preview fixtures.
 
 ## Control model
 
@@ -56,6 +57,12 @@ Run:
 
 ```bash
 npm run validate:storefront-plan
+```
+
+Validate the Step 2 canonical contracts and fixtures with:
+
+```bash
+npm run validate:storefront-contracts
 ```
 
 The validator checks duplicate route IDs, duplicate canonical paths, missing parents, unknown mapping targets, duplicate legacy paths, and invalid redirect targets. Pending approvals are reported but do not fail structural validation.
