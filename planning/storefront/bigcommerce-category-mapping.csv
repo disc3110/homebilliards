@@ -1,0 +1,70 @@
+new_route_id,new_path,current_category_ids,current_paths,mapping_action,notes,status
+billiards,/billiards,24,/billiards/,REUSE_ROOT,Current direct products must be reassigned to approved leaf categories,pending_catalog_cleanup
+billiards_pool_tables,/billiards/pool-tables,31,/billiards/slate-pool-tables/,REMAP_AND_REDIRECT,Keep current products; replace legacy public slug,pending_approval
+billiards_pool_cues,/billiards/pool-cues,32|132|133|134|145,/billiards/cues/|/billiards/pool-cues/pool-cues/|/billiards/pool-cues/pool-cues/snooker-cues/|/billiards/cues/break-jump-cues/|/billiards/cues/one-piece-short-cues/,CONSOLIDATE,Jordan defines one Pool Cues PLP; former subcategories can become filters or curated pages,pending_approval
+billiards_pool_cue_cases,/billiards/pool-cue-cases,33,/billiards/pool-cue-cases/,REUSE,Canonical path only needs slash normalization,pending_approval
+billiards_pool_table_felt,/billiards/pool-table-felt,35,/billiards/pool-table-felt/,REUSE,Existing category aligns,pending_approval
+billiards_pool_cue_racks,/billiards/pool-cue-racks-holders-storage,37,/billiards/pool-cue-racks-holders/,RENAME_AND_REDIRECT,Expanded Jordan label and slug,pending_approval
+billiards_pool_balls,/billiards/pool-balls,34,/billiards/balls/,RENAME_AND_REDIRECT,Jordan uses Pool Balls,pending_approval
+billiards_pool_table_covers,/billiards/pool-table-covers,36,/billiards/pool-table-covers/,REUSE,Existing category aligns,pending_approval
+billiards_chalk,/billiards/chalk-chalk-holders,38,/billiards/chalk/,EXPAND_AND_REDIRECT,Current Chalk category is hidden; include chalk holders after product audit,pending_catalog_cleanup
+billiards_gloves,/billiards/gloves,,,CREATE_OR_VIRTUAL,No matching BigCommerce category in the current tree,pending_catalog_cleanup
+billiards_cue_tips,/billiards/cue-tips-cue-maintenance,39,/billiards/billiard-accessories/,SPLIT_BY_PRODUCT,Create from audited products currently mixed in Billiard Accessories,pending_catalog_cleanup
+billiards_pool_table_care,/billiards/pool-table-care,39,/billiards/billiard-accessories/,SPLIT_BY_PRODUCT,Create from audited products currently mixed in Billiard Accessories,pending_catalog_cleanup
+billiards_joint_protectors,/billiards/pool-cue-joint-protectors,39,/billiards/billiard-accessories/,SPLIT_BY_PRODUCT,Create from audited products currently mixed in Billiard Accessories,pending_catalog_cleanup
+ping_pong,/ping-pong,85,/ping-pong/,REUSE_ROOT,Current direct product should be assigned to an approved leaf,pending_catalog_cleanup
+ping_pong_tables,/ping-pong/ping-pong-tables,41|172,/ping-pong/ping-pong-tables/|/ping-pong/ping-pong-tables/pre-assembled-blowout-tables/,CONSOLIDATE,Seasonal blowout child becomes a collection or filter rather than permanent taxonomy,pending_approval
+ping_pong_paddles,/ping-pong/ping-pong-paddles,43,/ping-pong/ping-pong-paddles/,REUSE,Existing category aligns,pending_approval
+ping_pong_robots,/ping-pong/ping-pong-robots,42,/ping-pong/ping-pong-robots/,REUSE,Existing category aligns,pending_approval
+ping_pong_balls,/ping-pong/ping-pong-balls,44,/ping-pong/ping-pong-balls/,REUSE,Existing category aligns,pending_approval
+ping_pong_nets,/ping-pong/ping-pong-net-posts,46,/ping-pong/nets-posts/,RENAME_AND_REDIRECT,Jordan uses Ping Pong Net & Posts,pending_approval
+ping_pong_covers,/ping-pong/ping-pong-table-covers,45,/ping-pong/ping-pong-table-covers/,REUSE,Existing category aligns,pending_approval
+bbq_cooking,/bbq-cooking,48,/bbq/,RENAME_AND_REDIRECT,Unifies current BBQ and grill URL families,pending_approval
+bbq_traeger_smokers,/bbq-cooking/traeger-smokers,91,/bbq/traeger-smokers/,MOVE_AND_REDIRECT,Move below BBQ & Cooking hub,pending_approval
+bbq_traeger_accessories,/bbq-cooking/traeger-accessories,56,/grill/grill-bbq-accessories/,SPLIT_BY_BRAND_OR_PRODUCT,Current general accessory category must be separated,pending_catalog_cleanup
+bbq_grill_covers,/bbq-cooking/grill-covers,119,/grill/traeger-grill-covers/,GENERALIZE_AND_REDIRECT,Jordan category is not Traeger-only,pending_catalog_cleanup
+bbq_sauces_spices,/bbq-cooking/sauces-spices,54,/grill/sauces-spices/,MOVE_AND_REDIRECT,Move below BBQ & Cooking hub,pending_approval
+bbq_wood_pellets,/bbq-cooking/wood-pellets,50,/grill/wood-pellets/,MOVE_AND_REDIRECT,Move below BBQ & Cooking hub,pending_approval
+bbq_food_thermometers,/bbq-cooking/food-thermometers,56,/grill/grill-bbq-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+bbq_cookware,/bbq-cooking/bbq-cookware,56,/grill/grill-bbq-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+bbq_maintenance,/bbq-cooking/bbq-maintenance,56,/grill/grill-bbq-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+foosball,/foosball,26,/foosball/,REUSE_ROOT,Current root has no direct products,pending_approval
+foosball_tables,/foosball/foosball-tables,106,/foosball/foosball-tables/,REUSE,Existing category aligns,pending_approval
+foosball_accessories,/foosball/foosball-accessories,107|108,/foosball/foosball-accessories/|/foosball/parts/,CONSOLIDATE,Jordan combines accessories and parts,pending_approval
+darts,/darts,86,/darts/,REUSE_ROOT,Current direct products must be reassigned to approved leaves,pending_catalog_cleanup
+darts_dartboards,/darts/dartboards,64,/darts/dartboards/,REUSE_WITH_LABEL_REVIEW,Path aligns; display spelling needs approval,pending_approval
+darts_darts,/darts/darts,27,/darts/darts/,REUSE,Existing category aligns,pending_approval
+darts_flights,/darts/dart-flights,66,/darts/dart-flights/,REUSE,Existing category aligns,pending_approval
+darts_shafts,/darts/dart-shafts,68,/darts/dart-shafts/,REUSE,Existing category aligns,pending_approval
+darts_cases,/darts/dart-cases,67,/darts/dart-cases-wallets/,RENAME_AND_REDIRECT,Jordan removes Wallets from public category label,pending_catalog_cleanup
+darts_tips,/darts/dart-tips,69,/darts/dart-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+darts_accessories,/darts/dart-accessories,69,/darts/dart-accessories/,REUSE_AFTER_SPLIT,Remove products assigned to the new Dart Tips category,pending_catalog_cleanup
+table_games,/table-games,87,/games/,RENAME_AND_REDIRECT,Jordan renames Games to Table Games,pending_approval
+table_games_air_hockey_tables,/table-games/air-hockey-tables,59|115|117,/games/air-hockey-tables/|/games/air-hockey-tables/special-order/|/games/air-hockey/in-stock-tables/,CONSOLIDATE,Availability children become filters or collections,pending_approval
+table_games_air_hockey_accessories,/table-games/air-hockey-accessories,61,/games/game-table-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+table_games_poker_tables,/table-games/poker-tables,71,/games/poker-tables/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_poker_chips,/table-games/poker-chips,72,/games/poker-chips/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_poker_accessories,/table-games/poker-accessories,75,/games/poker-accessories/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_cards,/table-games/cards,73,/games/cards/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_board_games,/table-games/board-games,62,/games/board-games/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_dice,/table-games/dice,74,/games/dice/,MOVE_AND_REDIRECT,Move below Table Games,pending_approval
+table_games_sports,/table-games/sports-backyard-games,83|60,/games/sports/|/games/misc-games/,CONSOLIDATE_AND_REVIEW,Jordan combines sports and backyard games; misc product membership requires review,pending_catalog_cleanup
+shuffleboard,/shuffleboard,109,/games/shuffleboard-tables/,PROMOTE_TO_ROOT,New root represents the shuffleboard family,pending_approval
+shuffleboard_tables,/shuffleboard/shuffleboard-tables,109|169|170,/games/shuffleboard-tables/|/games/shuffleboard-tables/quick-ship-special-order-tables/|/games/shuffleboard-tables/custom-american-made-tables/,CONSOLIDATE,Delivery and custom children become filters or approved curated pages,pending_approval
+shuffleboard_powder,/shuffleboard/shuffleboard-powder,61,/games/game-table-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+shuffleboard_accessories,/shuffleboard/shuffleboard-accessories,61,/games/game-table-accessories/,SPLIT_BY_PRODUCT,No dedicated current category,pending_catalog_cleanup
+furniture,/furniture,114,/billiards/billiard-table-furniture/,PROMOTE_TO_ROOT,Jordan creates a top-level Furniture family,pending_catalog_cleanup
+furniture_chairs,/furniture/chairs,,,CREATE_OR_VIRTUAL,No dedicated current category,pending_catalog_cleanup
+furniture_benches,/furniture/benches,113,/billiards/billiard-table-furniture/dining-bench/,RENAME_AND_REDIRECT,Review whether all benches belong here,pending_catalog_cleanup
+furniture_dining_tables,/furniture/dining-tables,112,/billiards/billiard-table-furniture/table-top/,REBUILD_CATEGORY,Current Table Top category is not equivalent to Dining Tables,pending_catalog_cleanup
+brands,/brands,,,DERIVE_FROM_BRANDS,Build from 72 BigCommerce brand records; 14 currently have no products,pending_approval
+commercial,/commercial,126,/commercial/,REUSE_ROOT,Current root has no direct products,pending_approval
+commercial_pool_tables,/commercial/coin-operated-pool-tables,127,/commercial/coin-operated-pool-tables/,REUSE,Existing category aligns,pending_approval
+commercial_foosball,/commercial/coin-operated-foosball-tables,129,/commercial/coin-operated-foosball-tables/,REUSE,Existing category aligns,pending_approval
+commercial_air_hockey,/commercial/coin-operated-air-hockey-tables,128,/commercial/coin-operated-air-hockey-tables/,REUSE_WITH_LABEL_CHANGE,Current label says Commercial Air Hockey Tables,pending_approval
+commercial_arcade,/commercial/arcade-games,130,/commercial/coin-operated-jet-pong/,EXPAND_OR_REBUILD,Jet-Pong may be one Arcade Games product rather than the category source,pending_catalog_cleanup
+resources,/resources,,,MANUAL_CONTENT,No matching BigCommerce category; editorial content source remains to be chosen,pending_business_decision
+resources_articles,/resources/articles,,,MANUAL_CONTENT,Publish only when approved article content exists,pending_business_decision
+sale,/sale,173,/sale/,REUSE_COLLECTION,Display label changes to On Sale if approved,pending_approval
+new_arrivals,/new-arrivals,178,/new-arrivals/,REUSE_COLLECTION,Existing collection aligns,pending_approval
+made_in_canada,/made-in-canada,176,/made-in-canada/,REUSE_COLLECTION,Existing collection aligns,pending_approval

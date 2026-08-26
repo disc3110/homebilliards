@@ -1,0 +1,78 @@
+route_id,parent_route_id,source,label,canonical_path,page_type,navigation,indexability,content_shape,product_title_shape,launch_phase,status
+home,,SYSTEM,Home,/,HOME,header,index,MANUAL,NA,PILOT,approved_system
+search,,SYSTEM,Search,/search,UTILITY,utility,noindex,NONE,NA,PILOT,approved_system
+cart,,SYSTEM,Cart,/cart,UTILITY,utility,noindex,NONE,NA,PILOT,approved_system
+checkout,,SYSTEM,Checkout,/checkout,UTILITY,none,noindex,NONE,NA,V1,approved_system
+contact,,SYSTEM,Contact,/contact,UTILITY,utility,index,MANUAL,NA,PILOT,pending_approval
+catalog_leaf_resolver,,SYSTEM,Catalog leaf resolver,/{group-slug}/{category-slug}/{slug},RESOLVER_PATTERN,none,conditional,PRODUCT_OR_CURATED,VARIES,V1,approved
+article_detail,,SYSTEM,Article detail,/resources/articles/{article-slug},ROUTE_PATTERN,none,conditional,MANUAL,NA,V1,pending_approval
+brand_detail,,SYSTEM,Brand detail,/brands/{brand-slug},ROUTE_PATTERN,none,conditional,MANUAL,NA,V1,pending_approval
+billiards,,JORDAN,Billiards,/billiards,HUB,header,conditional,C1,NA,V1,pending_approval
+billiards_pool_tables,billiards,JORDAN,Pool Tables,/billiards/pool-tables,PLP,mega_menu,conditional,C1,A_SIZED,PILOT,pending_approval
+billiards_pool_cues,billiards,JORDAN,Pool Cues,/billiards/pool-cues,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+billiards_pool_cue_cases,billiards,JORDAN,Pool Cue Cases,/billiards/pool-cue-cases,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_pool_table_felt,billiards,JORDAN,Pool Table Felt,/billiards/pool-table-felt,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_pool_cue_racks,billiards,JORDAN,"Pool Cue Racks, Holders & Storage",/billiards/pool-cue-racks-holders-storage,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_pool_balls,billiards,JORDAN,Pool Balls,/billiards/pool-balls,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_pool_table_covers,billiards,JORDAN,Pool Table Covers,/billiards/pool-table-covers,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_chalk,billiards,JORDAN,Chalk & Chalk Holders,/billiards/chalk-chalk-holders,PLP,mega_menu,conditional,C1,B_UNSIZED,PILOT,pending_approval
+billiards_gloves,billiards,JORDAN,Gloves,/billiards/gloves,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_cue_tips,billiards,JORDAN,Cue Tips & Cue Maintenance,/billiards/cue-tips-cue-maintenance,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_pool_table_care,billiards,JORDAN,Pool Table Care,/billiards/pool-table-care,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+billiards_joint_protectors,billiards,JORDAN,Pool Cue Joint Protectors,/billiards/pool-cue-joint-protectors,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+ping_pong,,JORDAN,Ping Pong,/ping-pong,HUB,header,conditional,C1,NA,V1,pending_approval
+ping_pong_tables,ping_pong,JORDAN,Ping Pong Tables,/ping-pong/ping-pong-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+ping_pong_paddles,ping_pong,JORDAN,Ping Pong Paddles,/ping-pong/ping-pong-paddles,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+ping_pong_robots,ping_pong,JORDAN,Ping Pong Robots,/ping-pong/ping-pong-robots,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+ping_pong_balls,ping_pong,JORDAN,Ping Pong Balls,/ping-pong/ping-pong-balls,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+ping_pong_nets,ping_pong,JORDAN,Ping Pong Net & Posts,/ping-pong/ping-pong-net-posts,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+ping_pong_covers,ping_pong,JORDAN,Ping Pong Table Covers,/ping-pong/ping-pong-table-covers,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_cooking,,JORDAN,BBQ & Cooking,/bbq-cooking,HUB,header,conditional,C1,NA,V1,approved
+bbq_traeger_smokers,bbq_cooking,JORDAN,Traeger Smokers,/bbq-cooking/traeger-smokers,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+bbq_traeger_accessories,bbq_cooking,JORDAN,Traeger Accessories,/bbq-cooking/traeger-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_grill_covers,bbq_cooking,JORDAN,Grill Covers,/bbq-cooking/grill-covers,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_sauces_spices,bbq_cooking,JORDAN,Sauces & Spices,/bbq-cooking/sauces-spices,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_wood_pellets,bbq_cooking,JORDAN,Wood Pellets,/bbq-cooking/wood-pellets,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_food_thermometers,bbq_cooking,JORDAN,Food Thermometers,/bbq-cooking/food-thermometers,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_cookware,bbq_cooking,JORDAN,BBQ Cookware,/bbq-cooking/bbq-cookware,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+bbq_maintenance,bbq_cooking,JORDAN,BBQ Maintenance,/bbq-cooking/bbq-maintenance,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+foosball,,JORDAN,Foosball,/foosball,HUB,header,conditional,C1,NA,V1,pending_approval
+foosball_tables,foosball,JORDAN,Foosball Tables,/foosball/foosball-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+foosball_accessories,foosball,JORDAN,Foosball Accessories,/foosball/foosball-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts,,JORDAN,Darts,/darts,HUB,header,conditional,C1,NA,V1,pending_approval
+darts_dartboards,darts,JORDAN,Dartboards,/darts/dartboards,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,approved
+darts_darts,darts,JORDAN,Darts,/darts/darts,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts_flights,darts,JORDAN,Dart Flights,/darts/dart-flights,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts_shafts,darts,JORDAN,Dart Shafts,/darts/dart-shafts,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts_cases,darts,JORDAN,Dart Cases,/darts/dart-cases,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts_tips,darts,JORDAN,Dart Tips,/darts/dart-tips,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+darts_accessories,darts,JORDAN,Dart Accessories,/darts/dart-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games,,JORDAN,Table Games,/table-games,HUB,header,conditional,C1,NA,V1,approved
+table_games_air_hockey_tables,table_games,JORDAN,Air Hockey Tables,/table-games/air-hockey-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+table_games_air_hockey_accessories,table_games,JORDAN,Air Hockey Accessories,/table-games/air-hockey-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_poker_tables,table_games,JORDAN,Poker Tables,/table-games/poker-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+table_games_poker_chips,table_games,JORDAN,Poker Chips,/table-games/poker-chips,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_poker_accessories,table_games,JORDAN,Poker Accessories,/table-games/poker-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_cards,table_games,JORDAN,Cards,/table-games/cards,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_board_games,table_games,JORDAN,Board Games,/table-games/board-games,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_dice,table_games,JORDAN,Dice,/table-games/dice,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+table_games_sports,table_games,JORDAN,Sports & Backyard Games,/table-games/sports-backyard-games,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+shuffleboard,,JORDAN,Shuffleboard,/shuffleboard,HUB,header,conditional,C1,NA,V1,pending_approval
+shuffleboard_tables,shuffleboard,JORDAN,Shuffleboard Tables,/shuffleboard/shuffleboard-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+shuffleboard_powder,shuffleboard,JORDAN,Shuffleboard Powder,/shuffleboard/shuffleboard-powder,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+shuffleboard_accessories,shuffleboard,JORDAN,Shuffleboard Accessories,/shuffleboard/shuffleboard-accessories,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+furniture,,JORDAN,Furniture,/furniture,HUB,header,conditional,C1,NA,V1,pending_approval
+furniture_chairs,furniture,JORDAN,Chairs,/furniture/chairs,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+furniture_benches,furniture,JORDAN,Benches,/furniture/benches,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+furniture_dining_tables,furniture,JORDAN,Dining Tables,/furniture/dining-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+brands,,JORDAN,Brand,/brands,BRAND_INDEX,footer,conditional,MANUAL,NA,V1,approved
+commercial,,JORDAN,Commercial,/commercial,HUB,header,conditional,C1,NA,V1,pending_approval
+commercial_pool_tables,commercial,JORDAN,Coin-Operated Pool Tables,/commercial/coin-operated-pool-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+commercial_foosball,commercial,JORDAN,Coin-Operated Foosball Tables,/commercial/coin-operated-foosball-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+commercial_air_hockey,commercial,JORDAN,Coin-Operated Air Hockey Tables,/commercial/coin-operated-air-hockey-tables,PLP,mega_menu,conditional,C1,A_SIZED,V1,pending_approval
+commercial_arcade,commercial,JORDAN,Arcade Games,/commercial/arcade-games,PLP,mega_menu,conditional,C1,B_UNSIZED,V1,pending_approval
+resources,,JORDAN,Resources,/resources,EDITORIAL_HUB,footer,conditional,MANUAL,NA,V1,pending_approval
+resources_articles,resources,JORDAN,Articles,/resources/articles,EDITORIAL_LIST,footer,conditional,MANUAL,NA,V1,pending_approval
+sale,,JORDAN,On Sale,/sale,COLLECTION,header,conditional,COLLECTION,VARIES,V1,approved
+new_arrivals,,JORDAN,New Arrivals,/new-arrivals,COLLECTION,header,conditional,COLLECTION,VARIES,V1,pending_approval
+made_in_canada,,JORDAN,Made in Canada,/made-in-canada,COLLECTION,header,conditional,COLLECTION,VARIES,V1,pending_approval

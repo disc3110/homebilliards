@@ -40,3 +40,13 @@ npm run check
 This runs formatting checks, lint, type checking, tests, and production builds. Pull requests into `dev` or `main` run the same command in CI.
 
 Project requirements and architecture live in [DOCUMENTATION.md](DOCUMENTATION.md). Open business and SEO questions live in [DECISIONS.md](DECISIONS.md).
+
+## Storefront URL and content planning
+
+The Step 1 control pack for Jordan's URL directory, BigCommerce category mapping, redirects, content templates, rollout scope, and approval gates lives in [planning/storefront/README.md](planning/storefront/README.md).
+
+Validate its machine-readable registries with:
+
+```bash
+npm run validate:storefront-plan
+```

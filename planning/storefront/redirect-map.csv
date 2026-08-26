@@ -1,0 +1,82 @@
+legacy_path,target_path,source_category_id,production_status,staging_status,reason,status
+/billiards/,/billiards,24,301,307,Canonical slash normalization,ready
+/billiards/slate-pool-tables/,/billiards/pool-tables,31,301,307,Jordan Pool Tables canonical route,pending_approval
+/billiards/cues/,/billiards/pool-cues,32,301,307,Jordan Pool Cues canonical route,pending_approval
+/billiards/pool-cues/pool-cues/,/billiards/pool-cues,132,301,307,Consolidate hidden cue child,pending_approval
+/billiards/pool-cues/pool-cues/snooker-cues/,/billiards/pool-cues,133,301,307,Consolidate hidden cue child,pending_approval
+/billiards/cues/break-jump-cues/,/billiards/pool-cues,134,301,307,Convert former child to filter or curated view,pending_approval
+/billiards/cues/one-piece-short-cues/,/billiards/pool-cues,145,301,307,Convert former child to filter or curated view,pending_approval
+/billiards/cues/snooker-cues/bce-riley-cues/,/billiards/pool-cues,143,301,307,Empty current child; redirect to consolidated Pool Cues,pending_approval
+/billiards/cues/snooker-cues/dufferin-snooker-cues/,/billiards/pool-cues,142,301,307,Empty current child; redirect to consolidated Pool Cues,pending_approval
+/billiards/cues/snooker-cues/elite-snooker-cues/,/billiards/pool-cues,144,301,307,Empty current child; redirect to consolidated Pool Cues,pending_approval
+/billiards/pool-cue-cases/,/billiards/pool-cue-cases,33,301,307,Canonical slash normalization,ready
+/billiards/pool-table-felt/,/billiards/pool-table-felt,35,301,307,Canonical slash normalization,ready
+/billiards/pool-cue-racks-holders/,/billiards/pool-cue-racks-holders-storage,37,301,307,Expanded Jordan category name,pending_approval
+/billiards/balls/,/billiards/pool-balls,34,301,307,Jordan Pool Balls canonical route,pending_approval
+/billiards/pool-table-covers/,/billiards/pool-table-covers,36,301,307,Canonical slash normalization,ready
+/billiards/chalk/,/billiards/chalk-chalk-holders,38,301,307,Jordan combined Chalk & Chalk Holders route,pending_approval
+/billiards/billiard-accessories/,TBD,39,301,307,Products must split across multiple Jordan leaves,pending_catalog_split
+/billiards/3-in-1-multi-game-tables/,TBD,171,301,307,No direct Jordan category; determine Table Games placement,business_decision
+/billiards/billiard-table-furniture/,/furniture,114,301,307,Furniture promoted to top-level hub,pending_approval
+/billiards/billiard-table-furniture/dining-bench/,/furniture/benches,113,301,307,Jordan Benches canonical route,pending_catalog_split
+/billiards/billiard-table-furniture/table-top/,TBD,112,301,307,Table tops are not necessarily Dining Tables,business_decision
+/ping-pong/,/ping-pong,85,301,307,Canonical slash normalization,ready
+/ping-pong/ping-pong-tables/,/ping-pong/ping-pong-tables,41,301,307,Canonical slash normalization,ready
+/ping-pong/ping-pong-tables/pre-assembled-blowout-tables/,/ping-pong/ping-pong-tables,172,301,307,Seasonal child becomes filter or collection,pending_approval
+/ping-pong/ping-pong-paddles/,/ping-pong/ping-pong-paddles,43,301,307,Canonical slash normalization,ready
+/ping-pong/ping-pong-robots/,/ping-pong/ping-pong-robots,42,301,307,Canonical slash normalization,ready
+/ping-pong/ping-pong-balls/,/ping-pong/ping-pong-balls,44,301,307,Canonical slash normalization,ready
+/ping-pong/nets-posts/,/ping-pong/ping-pong-net-posts,46,301,307,Jordan expanded category label,pending_approval
+/ping-pong/ping-pong-table-covers/,/ping-pong/ping-pong-table-covers,45,301,307,Canonical slash normalization,ready
+/ping-pong/ping-pong-accessories/,TBD,47,301,307,Jordan directory has no general Ping Pong Accessories leaf,business_decision
+/bbq/,/bbq-cooking,48,301,307,Unify BBQ & Cooking taxonomy,pending_approval
+/bbq/traeger-smokers/,/bbq-cooking/traeger-smokers,91,301,307,Move below BBQ & Cooking,pending_approval
+/grill/grill-bbq-accessories/,TBD,56,301,307,Products split across Traeger Accessories thermometers cookware and maintenance,pending_catalog_split
+/grill/traeger-grill-covers/,/bbq-cooking/grill-covers,119,301,307,Jordan generalized Grill Covers category,pending_catalog_split
+/grill/sauces-spices/,/bbq-cooking/sauces-spices,54,301,307,Move below BBQ & Cooking,pending_approval
+/grill/wood-pellets/,/bbq-cooking/wood-pellets,50,301,307,Move below BBQ & Cooking,pending_approval
+/grill/pizza-ovens/,TBD,52,301,307,Pizza Ovens absent from Jordan directory,business_decision
+/foosball/,/foosball,26,301,307,Canonical slash normalization,ready
+/foosball/foosball-tables/,/foosball/foosball-tables,106,301,307,Canonical slash normalization,ready
+/foosball/foosball-accessories/,/foosball/foosball-accessories,107,301,307,Canonical slash normalization,ready
+/foosball/parts/,/foosball/foosball-accessories,108,301,307,Jordan combines parts with accessories,pending_approval
+/darts/,/darts,86,301,307,Canonical slash normalization,ready
+/darts/dartboards/,/darts/dartboards,64,301,307,Canonical slash normalization,ready
+/darts/darts/,/darts/darts,27,301,307,Canonical slash normalization,ready
+/darts/dart-board-cabinets/,TBD,65,301,307,Dart Board Cabinets absent from Jordan directory,business_decision
+/darts/dart-flights/,/darts/dart-flights,66,301,307,Canonical slash normalization,ready
+/darts/dart-shafts/,/darts/dart-shafts,68,301,307,Canonical slash normalization,ready
+/darts/dart-cases-wallets/,/darts/dart-cases,67,301,307,Jordan Dart Cases canonical route,pending_catalog_split
+/darts/dart-accessories/,TBD,69,301,307,Products split between Dart Tips and Dart Accessories,pending_catalog_split
+/games/,/table-games,87,301,307,Jordan renames Games to Table Games,pending_approval
+/games/air-hockey-tables/,/table-games/air-hockey-tables,59,301,307,Move below Table Games,pending_approval
+/games/air-hockey-tables/special-order/,/table-games/air-hockey-tables,115,301,307,Availability child becomes filter,pending_approval
+/games/air-hockey/in-stock-tables/,/table-games/air-hockey-tables,117,301,307,Availability child becomes filter,pending_approval
+/games/poker-tables/,/table-games/poker-tables,71,301,307,Move below Table Games,pending_approval
+/games/poker-chips/,/table-games/poker-chips,72,301,307,Move below Table Games,pending_approval
+/games/poker-accessories/,/table-games/poker-accessories,75,301,307,Move below Table Games,pending_approval
+/games/cards/,/table-games/cards,73,301,307,Move below Table Games,pending_approval
+/games/board-games/,/table-games/board-games,62,301,307,Move below Table Games,pending_approval
+/games/dice/,/table-games/dice,74,301,307,Move below Table Games,pending_approval
+/games/sports/,/table-games/sports-backyard-games,83,301,307,Jordan Sports & Backyard Games route,pending_catalog_split
+/games/misc-games/,TBD,60,301,307,Review products before combining with Sports & Backyard Games,business_decision
+/games/game-table-accessories/,TBD,61,301,307,Products split across air hockey and shuffleboard accessory leaves,pending_catalog_split
+/games/shuffleboard-tables/,/shuffleboard/shuffleboard-tables,109,301,307,Promote Shuffleboard to top-level family,pending_approval
+/games/shuffleboard-tables/quick-ship-special-order-tables/,/shuffleboard/shuffleboard-tables,169,301,307,Fulfillment child becomes filter or approved curated page,pending_approval
+/games/shuffleboard-tables/custom-american-made-tables/,/shuffleboard/shuffleboard-tables,170,301,307,Custom child becomes filter or approved curated page,pending_approval
+/commercial/,/commercial,126,301,307,Canonical slash normalization,ready
+/commercial/coin-operated-pool-tables/,/commercial/coin-operated-pool-tables,127,301,307,Canonical slash normalization,ready
+/commercial/coin-operated-foosball-tables/,/commercial/coin-operated-foosball-tables,129,301,307,Canonical slash normalization,ready
+/commercial/coin-operated-air-hockey-tables/,/commercial/coin-operated-air-hockey-tables,128,301,307,Canonical slash normalization,ready
+/commercial/coin-operated-jet-pong/,/commercial/arcade-games,130,301,307,Jet-Pong becomes a product or subset of Arcade Games,pending_catalog_split
+/sale/,/sale,173,301,307,Canonical slash normalization,ready
+/new-arrivals/,/new-arrivals,178,301,307,Canonical slash normalization,ready
+/made-in-canada/,/made-in-canada,176,301,307,Canonical slash normalization,ready
+/black-friday/,/sale,174,301,307,Retire expired seasonal collection,pending_approval
+/deals/,/sale,175,301,307,Consolidate obsolete deals collection,pending_approval
+/installed-by-christmas/,TBD,177,301,307,Expired seasonal collection needs final SEO decision,business_decision
+/services/,TBD,151,301,307,Services absent from Jordan directory,business_decision
+/services/cue-services/,TBD,153,301,307,Services absent from Jordan directory,business_decision
+/services/custom-branded-services/,TBD,155,301,307,Services absent from Jordan directory,business_decision
+/services/game-table-services/,TBD,154,301,307,Services absent from Jordan directory,business_decision
+/services/pool-table-services/,TBD,152,301,307,Services absent from Jordan directory,business_decision
