@@ -1,0 +1,93 @@
+<a href="#main-content" class="skip-to-main-link">{{lang 'header.skip_to_main'}}</a>
+{{#if banners.top}}
+<div class="banners" data-banner-location="top">
+    {{#each (limit banners.top_metadata 1)}}
+    <div class="banner" data-event-type="promotion" data-entity-id="{{this.id}}" data-name="{{this.banner-name}}" data-position="{{this.location}}" data-banner-id="{{this.banner-name}}">
+        <div data-event-type="promotion-click">
+            {{{this.content}}}
+        </div>
+    </div>
+    {{/each}}
+</div>
+{{/if}}
+
+{{{region name="home_above_announcments"}}}
+{{{region name="home_above_announcments--global"}}}
+
+{{> components/gordonbyte/common/announcments/announcments }}
+
+{{> components/gordonbyte/common/mainmenu/mainmenu }}
+
+
+<header id="header" class="header logo-{{ theme_settings.logo-position }}" role="banner" data-apitok="{{settings.storefront_api.token}}">
+    <a href="#" class="mobileMenu-toggle" data-mobile-menu-toggle="menu">
+        <span class="mobileMenu-toggleIcon">Toggle menu</span>
+    </a>
+
+    <div class="header-holder">
+   
+        <div class="main-nav" style="display:none;">
+            <!--COMING SOON -->
+            {{#or (if theme_settings.logo-position '===' 'searchleft') (if theme_settings.logo-position '===' 'searchcenter')}}
+                {{> components/gordonbyte/common/quick-search2 name='nav-quick-search'}}
+            {{/or}}
+
+            {{#or (if theme_settings.logo-position '===' 'left') (if theme_settings.logo-position '===' 'center')}}
+            <div class="main-nav-menuList">
+                <ul> 
+                  {{#each pages}}
+                    {{!-- prevent to show specific pages   --}}
+                    {{#inArray (split 'shipping-returns|resources' '|') (lowercase (dashcase name))}}
+                    
+                    {{else}}
+                       <li class="navPages-item navPages-item-page">
+                           <a class="navPages-action{{#if name '==' ../page.title}} activePage{{/if}}"
+                              href="{{url}}"
+                              aria-label="{{name}}"
+                           >
+						   	{{first (split name ' - ')}}
+                           </a>
+
+                       </li>
+                    {{/inArray}}
+                   {{/each}}
+                 </ul>
+              </div><!--.main-nav-menuList ends-->
+            {{/or}}
+        </div>
+       
+        {{#if page_type '===' 'default'}}
+            <h1 class="header-logo header-logo--{{theme_settings.logo-position}}">
+                {{> components/common/store-logo}}
+            </h1>
+        {{else}}
+            <div class="header-logo header-logo--{{theme_settings.logo-position}}">
+                {{> components/common/store-logo}}
+            </div>
+        {{/if}}
+
+
+        {{> components/gordonbyte/common/navigation}}
+
+    </div><!--.header-holder ends-->
+    <div class="container-header-aoc">
+        <div class="navPages-container" id="menu" data-menu>
+            {{>components/gordonbyte/common/navigation-menu}}
+        </div>
+        <a id="cc" href="/contact-us">Contact Us</a>
+    </div> 
+   
+
+</header>
+
+
+{{{region name="header_navigation_bottom--global"}}}
+
+
+{{{region name="header_bottom--global"}}}
+{{{region name="header_bottom"}}}
+
+{{#if theme_settings.gb-multiCol-position-header "==" true }}
+    {{> components/gordonbyte/common/multi-column/multi-column theme_settings=theme_settings }}
+    {{{region name="home_below_multi_column"}}}
+{{/if}}

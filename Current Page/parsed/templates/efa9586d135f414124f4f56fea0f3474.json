@@ -1,0 +1,1 @@
+{"components/products/custom-fields":"{{#each product.custom_fields}}\r\n{{#if name '==' 'fallback_url'}}\r\n{{else}}\r\n<dt class=\"productView-info-name\">{{name}}:</dt>\r\n<dd class=\"productView-info-value\">{{{value}}}</dd>\r\n{{/if}}\r\n{{/each}}\r\n"}

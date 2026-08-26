@@ -1,0 +1,95 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+carousel: {{theme_settings.homepage_show_carousel}}
+blog:
+    recent_posts:
+        limit: {{theme_settings.homepage_blog_posts_count}}
+---
+{{#partial "hero"}}
+    {{{region name="home_below_menu"}}}
+    {{#and carousel carousel.slides.length}}
+        {{> components/gordonbyte/common/hero/carousel theme_settings=theme_settings arrows=theme_settings.homepage_show_carousel_arrows play_pause_button=theme_settings.homepage_show_carousel_play_pause_button carouselPosition=theme_settings.gb-carousel-direction}}
+    {{/and}}
+    {{{region name="home_below_carousel"}}}
+{{/partial}}
+
+{{#partial "page"}}
+
+    {{#each shipping_messages}}
+        {{> components/common/alert/alert-info message}}
+    {{/each}}
+
+<div id="main-container" class="main full" data-sections="{{ theme_settings.gb-section-order }}">
+
+        <section data-order="1">
+            {{> components/gordonbyte/common/banners/banners theme_settings=theme_settings }}
+            {{{region name="home_below_banners"}}}
+        </section>
+
+        <section data-order="2">
+            {{> components/gordonbyte/common/brands/brands theme_settings=theme_settings }}
+            {{{region name="home_below_brands"}}}
+        </section>
+
+        <section data-order="3">
+            {{#if products.featured}}
+                {{> components/gordonbyte/products/featured  theme_settings=theme_settings products=products.featured columns=theme_settings.homepage_featured_products_column_count settings=settings }}
+            {{/if}}
+            {{{region name="home_below_featured_products"}}}
+        </section>
+
+        <section data-order="4">
+            {{> components/gordonbyte/common/featured-product/featured-product theme_settings=theme_settings }}
+            {{{region name="home_below_featured_product"}}}
+        </section>
+
+        <section data-order="5">
+            {{#if products.top_sellers}}
+                {{> components/gordonbyte/products/top theme_settings=theme_settings products=products.top_sellers columns=theme_settings.homepage_top_products_column_count settings=settings }}
+            {{/if}}
+            {{{region name="home_below_top_products"}}}
+        </section>
+
+        <section data-order="6">
+            {{> components/gordonbyte/common/featured-info/featured-info theme_settings=theme_settings }}
+            {{{region name="home_below_featured_info"}}}
+        </section>
+
+        <section data-order="7">
+            {{#if products.new}}
+                {{> components/gordonbyte/products/new theme_settings=theme_settings products=products.new columns=theme_settings.homepage_new_products_column_count settings=settings }}
+            {{/if}}
+            {{{region name="home_below_new_products"}}}
+        </section>
+
+        <section data-order="8">
+            {{> components/gordonbyte/common/blog/blog theme_settings=theme_settings blog=blog }}
+            {{{region name="home_below_blog"}}}
+        </section>
+
+        <section data-order="9">
+            {{> components/gordonbyte/common/instagram/instagram theme_settings=theme_settings }}
+            {{{region name="home_below_instagram"}}}
+        </section>
+
+        <section data-order="10">
+            {{> components/gordonbyte/common/newsletter/newsletter theme_settings=theme_settings }}
+            {{{region name="home_below_newsletter"}}}
+        </section>
+
+        <section data-order="11">
+            {{#if theme_settings.gb-multiCol-position-header '==' false}}
+                {{> components/gordonbyte/common/multi-column/multi-column theme_settings=theme_settings }}
+                {{{region name="home_below_multi_column"}}}
+            {{/if}}
+        </section>
+    
+</div>
+{{/partial}}
+{{> layout/base}}

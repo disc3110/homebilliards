@@ -1,0 +1,30 @@
+{{#if theme_settings.gb-highlight-product-section-name }}
+  <div class="highlight-product{{#if theme_settings.gb-highlight-product-img-position }} {{theme_settings.gb-highlight-product-img-position }}-highlight{{/if}}" data-highlightid="{{ theme_settings.gb-highlight-product-section-name }}">
+    <div class="container">
+      <div class="flex-align">
+        <div class="highight-img">
+          <img src="" alt="">
+        </div>
+
+        <div class="highlight-info">
+
+          <h2></h2>
+
+          <div class="highlight-price"></div>
+
+          <div class="highight-atc">
+            <a href="#" class="button btn button--primary style-action"><span>{{ theme_settings.gb-highlight-buy-btn }}</span></a>
+          </div>
+
+          {{#if theme_settings.gb-highlight-product-enable-social-share }}
+          <div class="highlight-social"></div>
+          {{/if}}
+
+        </div>
+
+      </div>
+    </div>
+  </div><!--.highlight-product ends-->
+
+
+{{/if}}

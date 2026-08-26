@@ -1,0 +1,216 @@
+---
+product:
+    videos:
+        limit: {{theme_settings.productpage_videos_count}}
+    reviews:
+        limit: {{theme_settings.productpage_reviews_count}}
+    related_products:
+        limit: {{theme_settings.productpage_related_products_count}}
+    similar_by_views:
+        limit: {{theme_settings.productpage_similar_by_views_count}}
+---
+{{inject 'productId' product.id}}
+
+{{#partial "page"}}
+
+    {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+
+    {{#each product.shipping_messages}}
+        {{> components/common/alert/alert-info message}}
+    {{/each}}
+
+    <div>
+        {{> components/products/product-view rfq=(lang 'request_a_quote')}}
+
+        {{{region name="product_below_content"}}}
+
+        {{#if product.videos.list.length}}
+            {{> components/products/videos product.videos}}
+        {{/if}}
+
+        {{#all settings.show_product_reviews theme_settings.show_product_reviews (if theme_settings.show_product_details_tabs '!==' true)}}
+            {{> components/products/reviews reviews=product.reviews product=product urls=urls}}
+        {{/all}}
+
+        {{> components/gordonbyte/products/tabs}}
+    </div>
+
+    {{> components/products/schema}}
+    
+ <style>
+    [rfq]{ 
+    background-color: #707491;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  function waitForOCAndObserve() {
+    const oc = document.querySelector('.oc');
+    if (!oc) {
+      // Retry after a short delay if not found
+      setTimeout(waitForOCAndObserve, 200);
+      return;
+    }
+
+    const observer = new MutationObserver(function(mutationsList) {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          if (oc.textContent.trim() === "The selected product combination is currently unavailable.") {
+              if (!oc.querySelector('button[rfq].request_quote_card')) {
+                // Clear all existing children (text and elements)
+                while (oc.firstChild) {
+                  oc.removeChild(oc.firstChild);
+                }
+            
+                const button = document.createElement('button');
+                button.setAttribute('rfq', '');
+                button.classList.add('request_quote_card');
+                button.type = 'button'; // prevent default submit
+                button.textContent = "{{lang 'request_a_quote'}}";
+            
+                oc.appendChild(button);
+              }
+            }
+        }
+      }
+    });
+
+    observer.observe(oc, {
+      childList: true,
+      characterData: true,
+      subtree: true,
+    });
+  }
+
+  waitForOCAndObserve();
+});
+
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+  function initRFQHandler(x) {
+    if (!x) return;
+    console.log('[rfq] found, initializing click handler');
+
+    const form = x.closest('form');
+    if (!form) return;
+
+    let data = [];
+
+    x.addEventListener('click', function (ab) {
+      ab.preventDefault();
+      ab.stopPropagation();
+    // Collect all form data (already in your code)
+      // ✅ Place your GA4 event trigger here
+      if (typeof gtag === 'function') {
+        gtag('event', 'request_quote_click', {
+          event_category: 'engagement',
+          event_label: '{{product.title}}',
+          placement: '{{template_file}}'
+        });
+        console.log('[rfq] GA4 event fired');
+      } else {
+        console.warn('[rfq] gtag not defined — GA4 not loaded');
+      }  
+      data = [];
+
+      form.querySelectorAll('[data-product-attribute]').forEach(function (d) {
+        const type = d.getAttribute('data-product-attribute');
+        const labelEl = d.querySelector('label.form-label');
+        const label = labelEl
+          ? labelEl.textContent.replace(/\s+/g, ' ').replace('*', '').trim()
+          : null;
+
+        let displayValue = null;
+
+        if (type === 'set-select') {
+          const select = d.querySelector('select');
+          const selectedOption = select ? select.options[select.selectedIndex] : null;
+          displayValue = selectedOption ? selectedOption.textContent.trim() : null;
+        }else if(type == 'swatch'){
+            displayValue = '--';
+        } else {
+          const input = d.querySelector('input:checked');
+          if (input) {
+            const val = input.hasAttribute('value') ? input.value.trim() : '';
+            const valueLabel = d.querySelector(`label[data-product-attribute-value="${val}"]`);
+            displayValue = valueLabel ? valueLabel.textContent.trim() : 'None';
+          }
+        }
+
+        if (label && displayValue) {
+          data.push({ label, value: displayValue });
+        }
+      });
+
+      const output = data.map(item => ({
+        label: item.label,
+        value: item.value.toLowerCase() === 'value' ? 'none' : item.value
+      }));
+
+      output.unshift({
+        label: 'Product Name',
+        value: '{{product.title}}'
+      });
+
+      localStorage.setItem('request_quote_data', JSON.stringify(output));
+      window.location.href = "/contact-us-form";
+      data.length = 0;
+    });
+  }
+
+  // Track state
+  let isRFQInitialized = false;
+
+  function watchRFQPresence() {
+    const observer = new MutationObserver((mutationsList) => {
+      for (const mutation of mutationsList) {
+        mutation.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {
+            const rfqNode = node.matches?.('[rfq]') ? node : node.querySelector?.('[rfq]');
+            if (rfqNode && !isRFQInitialized) {
+              initRFQHandler(rfqNode);
+              isRFQInitialized = true;
+            }
+          }
+        });
+
+        mutation.removedNodes.forEach(node => {
+          if (node.nodeType === 1 && (node.matches?.('[rfq]') || node.querySelector?.('[rfq]'))) {
+            console.log('[rfq] button removed from DOM');
+            isRFQInitialized = false; // Allow reinitialization if added again
+          }
+        });
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true
+    });
+  }
+
+  // Init check and start observing
+  const existingRFQ = document.querySelector('[rfq]');
+  if (existingRFQ) {
+    initRFQHandler(existingRFQ);
+    isRFQInitialized = true;
+  }
+
+  watchRFQPresence();
+});
+</script>
+
+<style>
+    /* override the height of 100% of widget */
+    [data-layout-id] [data-placeholder]{
+        height:inherit !important;
+    }
+</style>   
+    
+{{/partial}}
+{{> layout/base}}

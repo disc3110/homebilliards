@@ -1,0 +1,125 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+brand:
+    products:
+        limit: {{theme_settings.brandpage_products_per_page}}
+---
+{{inject "brandProductsPerPage" theme_settings.brandpage_products_per_page}}
+{{#partial "head"}}
+    {{#if pagination.brand.previous}}
+        <link rel="prev" href="{{pagination.brand.previous}}">
+    {{/if}}
+    {{#if pagination.brand.next}}
+        <link rel="next" href="{{pagination.brand.next}}">
+    {{/if}}
+{{/partial}}
+
+{{#partial "page"}}
+{{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+{{#if brand.image}}
+    <div class="brand-image-container">
+        {{> components/common/responsive-img
+            image=brand.image
+            fallback_size=theme_settings.thumb_size
+            lazyload='disabled'
+        }}
+    </div>
+{{/if}}
+<h1 class="page-heading">{{brand.name}}</h1>
+{{{region name="brand_below_header"}}}
+<div class="page">
+    <aside class="page-sidebar" id="faceted-search-container">
+        {{> components/brand/sidebar}}
+    </aside>
+
+    <div class="page-content" id="product-listing-container">
+        {{#if brand.search_error }}
+            <p>{{lang 'search.errorMessage'}}</p>
+        {{else}}
+            {{#if brand.products}}
+                {{> components/brand/product-listing template_file=template_file}}
+            {{else}}
+                <p>{{lang 'brands.no_products'}}</p>
+            {{/if}}
+            {{{region name="brand_below_content"}}}
+        {{/if}}
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const templateFile = "{{template_file}}";
+
+  function attachRFQHandler(button) {
+    if (!button || button.dataset.rfqBound) return;
+    button.dataset.rfqBound = "true";
+
+    button.addEventListener('click', function (e) {
+      console.log('%c[RFQ CLICK DETECTED]', 'color: limegreen; font-weight: bold;');
+
+      // Determine placement
+      let placement = 'unknown';
+      if (templateFile.includes('product')) placement = 'product_page';
+      else if (templateFile.includes('category')) placement = 'category_page';
+      else if (templateFile.includes('contact')) placement = 'contact_page';
+      else placement = templateFile;
+
+      // Get product name
+      let productName = 'N/A';
+
+      if (templateFile.includes('product')) {
+        productName = document.querySelector('.productView-title')?.textContent?.trim() || 'N/A';
+      } else {
+        // ✅ Adjusted for your current HTML structure
+        const link = button.closest('.card-body')?.querySelector('h3.card-title a');
+        productName = link?.textContent?.trim() || 'N/A';
+      }
+
+      // Fire GA4 event
+      if (typeof gtag === 'function') {
+        gtag('event', 'request_quote_click', {
+          event_category: 'engagement',
+          event_label: productName,
+          placement: placement
+        });
+        console.log('[rfq] GA4 event fired:', {
+          event: 'request_quote_click',
+          product: productName,
+          placement: placement
+        });
+      } else {
+        console.warn('[rfq] gtag not defined — GA4 may not be loaded yet.');
+      }
+    });
+  }
+
+  // Mutation observer for dynamically added RFQ buttons
+  const observer = new MutationObserver((mutationsList) => {
+    mutationsList.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+
+        if (node.matches?.('[btn-gtag-rfq]')) {
+          attachRFQHandler(node);
+        } else {
+          node.querySelectorAll?.('[btn-gtag-rfq]').forEach(btn => attachRFQHandler(btn));
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Initial scan
+  document.querySelectorAll('[btn-gtag-rfq]').forEach(btn => attachRFQHandler(btn));
+});
+</script>
+
+
+{{/partial}}
+{{> layout/base}}

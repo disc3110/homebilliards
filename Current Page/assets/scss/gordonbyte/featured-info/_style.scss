@@ -1,0 +1,147 @@
+@import "settings";
+
+.homeBannersFull.full-w{
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+	height: auto;
+	padding: spacing("single") 0;
+
+    .container{
+      max-width: none;
+    }
+
+    .homeBannersFull{
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      width: 100vw;
+    }
+
+    @include breakpoint("medium") {
+      .bannerFullInfo-title{
+        width: 60%;
+      }
+    }
+}
+
+
+.homeBannersFull{
+  overflow: hidden;
+
+  @include breakpoint("small") {
+    height: 400px;
+  }
+
+  .container{
+    padding: 0;
+  }
+
+  img{
+    max-width: none;
+    min-width: 100%;
+    min-height: 100%;
+    @include breakpoint("small") {
+      max-width: 100%;
+    }
+  }
+}
+
+.homeBannerFull{
+
+  a{
+    position: relative;
+    display: block;
+  }
+
+  .bannerFullInfo{
+	position: absolute;
+	top: 0;
+    bottom: 0;
+	margin: auto;
+	padding: 0 spacing("double");
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+  }
+  
+
+  .no-img-size:after{
+	padding-bottom: 25%;
+  }
+}
+
+.bannerFullInfo-top{
+  background-color: $home-full-banners-mini-background-color;
+  border: 1px solid $home-full-banners-mini-border-color;
+  border-radius: 2px;
+  color: $home-full-banners-mini-text-color;
+  display: initial;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: spacing(quarter) spacing(single);
+  max-width: max-content;
+
+
+  @include breakpoint("medium") {
+    padding: spacing(quarter) spacing(double);
+  }
+}
+
+.bannerFullInfo-title{
+  padding: spacing(half) 0;
+
+  h2{
+    color: $home-full-banners-main-text-color;
+    font-size: var(--fs-large);
+    margin: 0;
+  }
+}
+
+.homeBannerFull-left{
+  text-align: left;
+
+  .bannerFullInfo{
+	align-items: start;
+	}
+
+  @include breakpoint("medium") {
+    .bannerFullInfo-title{
+      width: 70%;
+    }
+  }
+}
+
+.homeBannerFull-center{
+  text-align: center;
+
+  .bannerFullInfo{
+	align-items: center;
+	}
+
+  @include breakpoint("medium") {
+    .bannerFullInfo-title{
+      width: 70%;
+    }
+  }
+}
+
+.homeBannerFull-right{
+  text-align: right;
+
+  .bannerFullInfo{
+	  align-items: end;
+  }
+
+  @include breakpoint("medium") {
+    .bannerFullInfo-title{
+      width: 70%;
+    }
+  }
+}

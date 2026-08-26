@@ -1,0 +1,9 @@
+<h2 class="page-heading">{{lang 'products.top' }}</h2>
+
+<ul class="productGrid productGrid--maxCol{{ columns }}" data-product-type="top_sellers" data-list-name="Most Popular Products">
+{{#each (limit products theme_settings.homepage_top_products_count) }}
+<li class="product">
+    {{>components/gordonbyte/products/card show_rating=../settings.show_product_rating settings=../settings theme_settings=../theme_settings customer=../customer event="list" position=(add @index 1)}}
+</li>
+{{/each}}
+</ul>

@@ -1,0 +1,633 @@
+@import "settings";
+
+// =============================================================================
+// CARDS (CSS)
+// =============================================================================
+//
+// 1. Allow users to click the anchor tag on the image in the figcaption empty
+//    space. This provides a much larger and simpler hit state for navigating
+//    to the product details page. (Does not work in IE10 or earlier).
+// 2. Using translate3d to counter a chrome specific bug: When using a masonry
+//    styled layout via CSS column-count etc, transforms applied to descendants
+//    are made invisible, except for 3d transforms...
+//
+// -----------------------------------------------------------------------------
+
+.card {
+
+    .card-img-container{
+      .first-card-img{
+        z-index: zIndex("low");
+      }
+
+      .card-img-divider{
+        z-index: zIndex("lower");
+      }
+
+      .second-card-img{
+        z-index: zIndex("lowest");
+
+        &:hover{
+          opacity: 1 !important;
+        }
+      }
+    }
+
+
+    &:focus-within {
+        .card-figcaption {
+            opacity: 1;
+        }
+    }
+
+    &.focus-within {
+        .card-figcaption {
+            opacity: 1;
+        }
+    }
+}
+
+
+.card:hover{
+  .card-img-container{
+    box-shadow: 0 0 10px #dedede;
+  }
+
+  .card-figcaption {
+      opacity: 1;
+  }
+
+  .first-card-img, .card-img-divider{
+    opacity: 0;
+  }
+
+  .addtocart-btn{
+    a{
+      box-shadow: 0 0 10px #dedede;
+      opacity: 1;
+    }
+  }
+
+  .card-img-container img:last-child{
+      opacity: 1 !important;
+  }
+}
+
+.hide-tools{
+  display: none !important;
+}
+
+.card-figure {
+    margin-top: $card-figure-marginTop;
+    position: relative;
+    &:hover {
+
+        // scss-lint:disable NestingDepth
+    }
+}
+
+.card-img-container {
+  border: 1px solid #eee;
+  position: relative;
+  overflow: hidden;
+  max-width: get-width(stencilString('productgallery_size'));
+  @include lazy-loaded-padding('productgallery_size');
+}
+
+.card-img-container:after{
+  padding-bottom: 100%;
+}
+
+.card-img-divider{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.card-figcaption {
+    @include transition(all, $transition-speed-6, ease-in-out);
+    margin: $card-figcaption-margin;
+    pointer-events: none; // 1
+    opacity: 1;
+
+    @include breakpoint("medium") {
+        display: block;
+        opacity: 0;
+    }
+}
+
+.card-figcaption-body {
+    display: $card-figcaption-body-display;
+    pointer-events: all; // 1
+    transform: translate3d(0, -50%, 0); // 2
+}
+
+.card-image {
+    @include lazy-loaded-img;
+    @include transition(all, $transition-speed-6, ease-in-out);
+    border: 0;
+    width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    /* Object-fit polyfill */
+}
+
+
+
+.card-title {
+    font-size: $card-title-fontSize;
+    margin: $card-title-margin;
+    min-height: 45px;
+    overflow: hidden;
+
+    > a {
+        color: $card-title-color;
+        text-decoration: $card-title-textDecoration;
+        display: block;
+
+        // scss-lint:disable NestingDepth
+        &:hover {
+            color: $card-title-color-hover;
+        }
+    }
+}
+
+.card {
+    margin-bottom: $card-text-marginBottom;
+
+    .price-section{
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    abbr {
+        border: 0;
+        color: inherit;
+        font-size: inherit;
+    }
+}
+
+.brandName-card{
+  height: 20px;
+  margin-bottom: spacing("quarter");
+}
+
+.card .cardPriceList{
+  text-align: center;
+
+  @include breakpoint("medium") {
+    height: 50px;
+  }
+
+  .price-section{
+    display: inline-block;
+    // margin: 0 spacing("quarter");
+    font-weight: 600;
+    text-align: center;
+  }
+}
+
+
+.addtocart-btn{
+  a{
+    padding: spacing("half") spacing("quarter");
+    font-weight: 600;
+    text-transform: uppercase;
+	  border-radius: 1px;
+
+    @include transition(all, $transition-speed-4, ease-in-out);
+
+  }
+}
+
+
+
+.card-body {
+    text-align: center;
+}
+
+.cardPriceList{
+  @include grid-column(12);
+}
+
+.card-text.cardPriceList{
+  p{
+    margin: 0 auto;
+  }
+}
+
+// .saleHolder, .priceHolder{
+//   @include grid-column(6);
+// }
+
+.cardPriceList {
+  .saleHolder{
+    .price-section{
+      text-align: left;
+    }
+  }
+
+  .price-section{
+    text-align: right;
+
+    @include breakpoint("medium") {
+      text-align: center;
+      width: 100%;
+    }
+
+    .priceLabel{
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+  }
+}
+
+.productCarousel .productCarousel-slide, .body .productGrid .product{
+  padding: 0;
+}
+
+.card{
+  padding: spacing("single") spacing("half") 0;
+  
+  .addtocart-btn{
+    @include grid-column(12);
+  }
+}
+
+.card-productRating{
+  height: 20px;
+  @include grid-column(12);
+
+  @include breakpoint("medium") {
+    margin-bottom: 5px;
+  }
+}
+
+
+.saleHolder.priceShare{
+  //height: 30px;
+  text-align: center;
+
+  @include breakpoint("medium") {
+    text-align: left;
+  }
+}
+
+.priceHolder.priceShare{
+  text-align: center;
+
+  @include breakpoint("medium") {
+    text-align: right;
+  }
+}
+
+.priceHolder {
+	display: flex;
+	flex-direction: row;
+
+	.price-section{
+		font-size: 1.1rem;
+    float: none;
+    margin: auto;
+
+    @include breakpoint("medium") {
+      font-size: 1.4rem;
+    }
+	}
+}
+
+.productGrid{
+  .product{
+    padding: spacing("half") 0;
+    
+    @include breakpoint("medium") {
+      padding: spacing("half");
+    }
+  }
+}
+
+.saleHolder, .priceHolder{
+  position: relative;
+  width: 100%;
+
+  &.priceShare{
+    @include grid-column(12);
+    padding: 0;
+
+    @include breakpoint("medium") {
+      line-height: 1.2rem;
+    }
+  }
+
+  .priceLabel{
+    font-size: 1rem;
+  }
+}
+
+.saleHolder{
+  &.priceShare{
+    @include breakpoint("medium") {
+      @include grid-column(6);
+    }
+  }
+}
+
+.priceHolder{
+  &.priceShare{
+    @include breakpoint("medium") {
+      @include grid-column(6);
+      padding: 0;
+    }
+
+  .price-now-label{
+    font-size: .8rem;
+  }
+
+  }
+}
+
+.cardPriceList .saleHolder:not(.priceShare){
+  display: none;
+}
+
+.cardPriceList{
+  @include breakpoint("medium") {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.card-figure{
+  position: relative;
+  padding: 0;
+  overflow: hidden;
+}
+
+.card-figcaption{
+  background-color: $card-figcaption-button-background;
+  border: 1px solid $card-figcaption-button-borderColor;
+  border-top: none;
+  position: relative;
+  top: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 40px;
+  width: 100%;
+  z-index: zIndex("high");
+
+  @include breakpoint("medium") {
+    position: absolute;
+  }
+
+  & > *{
+    display: inline-block;
+  }
+}
+
+.card-figcaption-body{
+  display: block;
+  font-size: .5rem;
+  text-align: center;
+  width: 100%;
+
+  .card-figcaption-button{
+	margin: 0;
+	padding: 0 5px;
+    background-color: transparent !important;
+	border: none !important;
+	border-radius: 0;
+    position: relative;
+    vertical-align: bottom;
+
+    input{
+      vertical-align: bottom;
+    }
+
+    &:hover{
+      span{
+        opacity: 1;
+      }
+    }
+  }
+
+  span{
+    @include transition(all, $transition-speed-4, ease-in-out);
+
+    position: absolute;
+    left: -64%;
+    right: 0;
+    bottom: 35px;
+    background-color: $card-figcaption-button-background;
+    border-radius: 2px;
+    color: $card-figcaption-button-color;
+    display: block;
+    font-size: .7rem;
+    margin: auto;
+    padding: 5px;
+    white-space: nowrap;
+    width: 70px;
+    opacity: 0;
+
+    &::after{
+      position: absolute;
+      top: 24px;
+      left: 40%;
+      transform: translateY(-50%);
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid $card-figcaption-button-background;
+      content: " ";
+      font-size: 0;
+      line-height: 0;
+    }
+  }
+
+  svg{
+    display: block;
+    margin: auto;
+    fill: $card-figcaption-button-color;
+  }
+
+
+  & > *{
+    display: inline-block;
+    margin: 0 10px !important;
+    vertical-align: middle;
+    cursor: pointer;
+  }
+}
+
+
+.quickviewlabel-btn, .comparelabel-btn{
+  //display: none;
+}
+
+.compareprod-btn{
+  padding: 0 10px;
+}
+
+
+.card-figcaption-button.quickview, .card-figcaption-button{
+  &:hover svg{
+    opacity: .6;
+  }
+}
+
+.card .card-swatch{
+  .form-option-swatch, .form-field{
+    margin-bottom: 0;
+  }
+
+  .form-option-swatch{
+    .form-option-expanded{
+      display: none !important;
+    }
+  }
+}
+
+
+
+
+//
+// Alternate card
+//
+// Purpose: Used to give the card alternative styling
+// -----------------------------------------------------------------------------
+
+.card--alternate {
+    transition: all 0.15s ease;
+
+    .card-body {
+        padding: spacing("half");
+        transition: all 0.15s ease;
+
+        @include breakpoint("small") {
+            padding: spacing("single");
+        }
+    }
+}
+
+.card{
+  #swatchGroup{
+    display: none;
+  }
+
+  .form-field{
+    margin: 0 0 spacing("half");
+
+    .form-option-swatch{
+      display: none;
+    }
+
+    .form-option-swatch:nth-child(-n+5){
+        display: inline-block;
+    }
+  }
+
+  .card-swatch{
+	position: relative;
+	padding: 10px 0 0;
+    min-height: 25px;
+  }
+
+  .form-option-swatch{
+    margin-right: 3px;
+
+    .style-parallel &{
+      transform: skew(-20deg, 0);
+    }
+  }
+
+  .form-option{
+    border:1px solid #e2e2e2 !important;
+  }
+
+  .form-option:hover{
+    cursor: default !important;
+  }
+
+  .swatch-total {
+    font-size: 11px;
+    margin-left: 5px;
+    display: inline-block;
+    vertical-align: text-top;
+  }
+
+  .form-option-variant--color,
+  .form-option-variant--pattern {
+      height: 16px;
+      width: 17px;
+  }
+}
+
+.card-figcaption-body span.comparelabel-btn{
+	left: -100%;
+}
+
+.productGrid{
+  .product{
+    width: grid-calc(6, $total-columns);
+
+    @include breakpoint("small") {
+      width: grid-calc(6, $total-columns);
+    }
+
+    @include breakpoint("medium") {
+      width: grid-calc(3, $total-columns);
+    }
+  }
+}
+
+.card-title{
+  max-height: 50px;
+
+    @include breakpoint("small") {
+      max-height: none;
+    }
+
+}
+
+.productGrid{
+  .product{
+    width: grid-calc(6, $total-columns);
+
+    @include breakpoint("small") {
+      width: grid-calc(6, $total-columns);
+    }
+
+    @include breakpoint("medium") {
+      width: grid-calc(3, $total-columns);
+    }
+  }
+}
+
+.page-sidebar + .page-content .productGrid .product{
+    width: grid-calc(6, $total-columns);
+
+    @include breakpoint("small") {
+      width: grid-calc(6, $total-columns);
+    }
+
+    @include breakpoint("medium") {
+      width: grid-calc(4, $total-columns);
+    }
+}
+
+
+.price-section{
+  text-transform: uppercase;
+
+  &.rrp-price--withoutTax{
+    margin-bottom: 0;   
+  }
+  
+  & > span:first-child, &.non-sale-price--withTax, &.non-sale-price--withoutTax, .price-now-label{
+    font-size: .9rem;
+    margin-bottom: 0;
+  }
+}

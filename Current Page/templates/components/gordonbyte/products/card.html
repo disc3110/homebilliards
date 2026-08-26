@@ -1,0 +1,201 @@
+<article
+    class="card
+    {{#if alternate}} card--alternate{{/if}}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}
+    data-test="card-{{id}}"
+    data-event-type="{{event}}"
+    data-entity-id="{{id}}"
+    data-position="{{position}}"
+    data-name="{{name}}"
+    data-gbproduct-id="{{id}}"
+    data-product-category="
+    {{#each category}}
+        {{#if @last}}
+            {{this}}
+        {{else}}
+            {{this}},
+        {{/if}}
+    {{/each}}"
+    data-product-brand="{{brand.name}}"
+    data-product-price="
+    {{#or customer (unless settings.hide_price_from_guests)}}
+        {{#if price.with_tax}}
+            {{price.with_tax.value}}
+        {{else}}
+            {{price.without_tax.value}}
+        {{/if}}
+    {{else}}
+        {{lang 'common.login_for_pricing'}}
+    {{/or}}"
+>
+    <figure class="card-figure">
+        {{#if stock_level '===' 0}}
+            {{#if theme_settings.pdp_sold_out_label '===' ''}}
+                {{> components/products/product-badge
+                    badge-type='sold-out'
+                    badge_view=theme_settings.product_sold_out_badges
+                    badge_label=(lang "page_builder.pdp_sold_out_label")
+                }}
+            {{else}}
+                {{> components/products/product-badge
+                    badge-type='sold-out'
+                    badge_view=theme_settings.product_sold_out_badges
+                    badge_label=theme_settings.pdp_sold_out_label
+                }}
+            {{/if}}
+        {{else}}
+            {{#or price.sale_price_with_tax.value price.sale_price_without_tax.value}}
+                {{#if theme_settings.pdp_sale_badge_label '===' ''}}
+                    {{> components/products/product-badge
+                        badge-type='sale'
+                        badge_view=theme_settings.product_sale_badges
+                        badge_label=(lang "page_builder.pdp_sale_badge_label")
+                    }}
+                {{else}}
+                    {{> components/products/product-badge
+                        badge-type='sale'
+                        badge_view=theme_settings.product_sale_badges
+                        badge_label=theme_settings.pdp_sale_badge_label
+                    }}
+                {{/if}}
+            {{/or}}
+        {{/if}}
+
+        <a href="{{url}}"
+           class="card-figure__link"
+           aria-label="{{> components/products/product-info}}"
+           data-event-type="product-click"
+        >
+        <div class="card-img-container">
+
+            {{#if image }}
+              {{> components/common/responsive-img
+                  image=image
+                  class="card-image first-card-img"
+                  fallback_size=theme_settings.productgallery_size
+                  lazyload=theme_settings.lazyload_mode
+                  default_image=theme_settings.default_image_product
+              }}
+              {{ else }}
+                {{> components/gordonbyte/common/no-img}}
+              {{/if}}
+
+              {{#if theme_settings.gb-second-ProductImg }}
+                  {{#each (limit images 2)}}
+                      {{#if @index '>' 0}}
+                      <div class="card-img-divider"></div>
+                          {{> components/common/responsive-img
+                              image=this
+                              class="card-image second-card-img"
+                              fallback_size=../../theme_settings.productgallery_size
+                              lazyload=../../theme_settings.lazyload_mode
+                              default_image=../../theme_settings.default_image_product
+                          }}
+                      {{/if}}
+                  {{/each}}
+              {{/if}}
+          </div>
+        </a>
+
+        <figcaption class="card-figcaption">
+            <div class="card-figcaption-body">
+                {{#unless hide_product_quick_view}}
+                    {{#if theme_settings.show_product_quick_view}}
+                        <button type="button" class="button button--small card-figcaption-button quickview" data-event-type="product-click" data-product-id="{{id}}">
+                            {{> components/gordonbyte/common/quickview-icon }}
+                        </button>
+                    {{/if}}
+                {{/unless}}
+
+
+                {{#if show_compare}}
+                <button class="card-figcaption-button compareprod-btn" for="compare-{{id}}">
+                    <div class="hidden">
+                        {{> components/gordonbyte/common/compare-icon }}
+                    </div>
+                    <span class="comparelabel-btn">{{lang 'products.compare'}}</span>
+                    <input type="checkbox" name="products[]" value="{{id}}" id="compare-{{id}}" data-compare-id="{{id}}">
+                </button>
+                {{/if}}
+
+                {{#if settings.show_wishlist}}
+                <form class="form" method="post" action="{{add_to_wishlist_url}}" data-wishlist-add>
+                  <input type="hidden" name="variation_id" value="">
+                  <button class="card-figcaption-button wishlist" title="{{lang 'account.wishlists.add_item'}}" class="button button--small card-figcaption-button btn-wishlist" type="submit">
+                    {{> components/gordonbyte/common/wishlist-icon }}
+                  </button>
+                </form>
+                {{/if}}
+
+            </div>
+        </figcaption>
+    </figure>
+    <div class="card-body">
+        <p class="card-text brandName-card" data-test-info-type="brandName">
+            {{#if brand.name}}
+              {{brand.name}}
+            {{/if}}
+        </p>
+
+        <h3 class="card-title">
+            <a aria-label="{{> components/products/product-info}}"
+               href="{{url}}"
+               data-event-type="product-click">
+                {{name}}
+            </a>
+        </h3>
+
+        <div class="card-productRating">
+            {{#and rating show_rating}}
+            <p class="card-text" data-test-info-type="productRating">
+                <span class="rating--small">
+                    {{> components/products/ratings rating_target=name rating=rating}}
+                </span>
+            </p>
+            {{/and}}
+        </div>
+
+        {{#if theme_settings.gb-card-swatch-enable }}
+        <div class="card-swatch">
+            <div class="loading-bars"></div>
+        </div>
+        {{/if}}
+        {{#if show_cart_action}}
+        <div class="card-text cardPriceList" data-test-info-type="price">
+            {{#or customer (unless settings.hide_price_from_guests)}}
+                {{> components/gordonbyte/products/price price=price}}
+            {{else}}
+                {{> components/common/login-for-pricing}}
+            {{/or}}
+        </div>
+
+        {{> components/products/bulk-discount-rates}}
+        
+        <div class="addtocart-btn">
+        
+                    {{#if has_options}}
+                        <a href="{{url}}" data-event-type="product-click" class="button button--small card-figcaption-button" data-product-id="{{id}}">{{lang 'products.choose_options'}}</a>
+                    {{/if}}
+                    {{#if pre_order}}
+                        <a href="{{pre_order_add_to_cart_url}}" data-event-type="product-click" class="button button--small card-figcaption-button">{{lang 'products.pre_order'}}</a>
+                    {{/if}}
+                    {{#if add_to_cart_url }}
+                        <a href="{{add_to_cart_url}}" data-event-type="product-click" data-button-type="add-cart" class="button button--small card-figcaption-button">{{lang 'products.add_to_cart'}}</a>
+                        <span class="product-status-message aria-description--hidden">{{lang 'category.add_cart_announcement'}}</span>
+                    {{/if}}
+                    {{#if out_of_stock_message }}
+                        <a href="{{url}}" data-event-type="product-click" class="button button--small card-figcaption-button" data-product-id="{{id}}">{{out_of_stock_message}}</a>
+                    {{/if}}
+    
+            </div><!--.addtocart-btn ends-->
+    </div>
+    {{else}} 
+       
+        {{#filter custom_fields 'fallback_url' property='name'}}
+                   <a href="{{#withLast (split value '|')}}{{this}}{{/withLast}}" class="request_quote_card" btn-gtag-rfq>{{#withFirst (split value '|')}}{{this}}{{/withFirst}}</a>
+        {{else}}
+            {{!-- This block executes if 'fallback_url' is not found among custom fields --}}
+            <a href="/contact-us" class="request_quote_card" btn-gtag-rfq >Request a Quote</a>
+        {{/filter}}
+
+    {{/if}}
+</article>

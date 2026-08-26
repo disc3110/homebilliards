@@ -1,0 +1,127 @@
+@import "settings";
+
+
+.instaSection{
+	position: relative;
+	padding: spacing("single") 0 0;
+	left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+
+	.page-heading{
+	  svg{
+		fill: $header-font-color;
+		height: 25px;
+		width: 25px;
+		vertical-align: middle;
+		margin-top: -4px;
+	  }
+	}
+  }
+  
+  
+  #instafeed{
+	a{
+	  position: relative;
+	  border: 1px solid $instagram-border-color;
+	  background-repeat: no-repeat;
+	  background-position: center;
+	  background-size: cover;
+	  display: inline-block;
+	  overflow: hidden;
+  
+	  &:hover{
+		.instatint{
+		  opacity: .6;
+		}
+	  }
+  
+	  img{
+	  width: auto;
+	  max-width: 100%;
+	  min-height: 100%;
+	  object-fit: cover;
+	  }
+	}
+  }
+  
+  .insta-icon{
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	margin: auto;
+	height: 30px;
+	width: 30px;
+	fill: #fff;
+	z-index: 9;
+  }
+  
+  .instaSlider{
+	box-sizing: border-box;
+	display: flex;
+	flex-wrap: wrap;
+	position: relative;
+  }
+  
+  .instaholder{
+	  display: flex;
+	  flex-direction: column;
+	  box-sizing: border-box;
+	  flex-basis: 100%;
+	  max-width: 100%;
+	  z-index: 0;
+	  justify-content: center;
+	  position: relative;
+  
+	  .slick-track
+	  {
+		  display: flex !important;
+	  }
+  
+	  .slick-slide
+	  {
+		  height: inherit !important;
+	  }
+  }
+  
+  
+  .instatint{
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #000;
+	height: 100%;
+	width: 100%;
+	opacity: .2;
+	z-index: 8;
+	@include transition(all, $transition-speed-3, ease-in-out);
+  }
+  
+  .footer-info-col{
+	&.instaFooter{
+	  @include grid-column(12);
+  
+	  @include breakpoint("medium") {
+		@include grid-column(3);
+	  }
+  
+  
+	}
+  }
+  
+  
+  .instaFooter{
+   .footer-info-heading{
+	 svg{
+	   fill: $footer-heading-fontColor;
+	 }
+   }
+  }
+  
+  .instaFooter #instafeed a{
+	margin-right: 5px;
+  }

@@ -1,0 +1,142 @@
+@import "settings";
+
+.topBar {
+	display: flex;
+	flex-direction: row;
+	background-color: $top-bar-background;
+	color: $top-bar-color;
+	border-bottom: 1px solid #eee;
+  
+	a{
+	  color: $top-bar-color;
+  
+	  &:hover{
+		opacity: .8;
+	  }
+	}
+}
+
+.topMenu {
+
+	& > div{
+		width: 100%;
+	}
+
+	ul {
+	  text-align: center;
+	  float: left;
+	  padding: 0;
+	  margin: 0;
+	  width: 100%;
+	}
+  
+	ul, .navPages-action {
+	  width: 100%;
+	}
+  
+	.navPages-action {
+	  padding: spacing("half") spacing("half") spacing("half") 0 ;
+	  color: $top-bar-color;
+	}
+  
+	.navPages-item {
+	  display: none;
+	}
+  
+	&.text-center .navPages-item{
+	  float: none;
+	  display: inline-block;
+  
+	  .navPages-action{
+		padding: 0 spacing("half");
+	  }
+	}
+  
+	@include breakpoint("medium") {
+	  .navPages-item {
+		display: inline-block;
+		float: none;
+	  }
+	}
+  
+  }
+
+  .topMenu, .anncmnt{
+	@include grid-column(12);
+	text-align: center;
+	padding: 0 spacing("half");
+  
+	@include breakpoint("medium") {
+  
+	  &.textLeft{
+		width: width("5/12");
+		text-align: left;
+  
+		.navPages-item{
+		  float: left;
+		}
+	  }
+		display: block;
+	}
+  }
+  
+  .companyInfo {
+	@include grid-column(12);
+	display: none;
+  
+	@include breakpoint("medium") {
+	  width: width("7/12");
+		display: block;
+	}
+
+	&.text-right{
+		text-align: right;
+	}
+  
+  
+	.companyInfo-loc, .companyInfo-phone {
+  
+	  span:not(.companyInfo-mobile){
+		display: none;
+  
+		@include breakpoint("medium") {
+			display: inline-block;
+		}
+	  }
+  
+	  svg {
+		margin-right: 3px;
+		margin-top: -3px;
+		vertical-align: middle;
+		fill: $top-bar-color;
+	  }
+	}
+  }
+  
+  .gift-cert{
+	@include breakpoint("medium") {
+	  margin-top: 1px;
+	}
+  
+	.headerTitle{
+	  @include breakpoint("medium") {
+		margin-top: -1px;
+	  }
+	}
+  }
+  
+  .anncmnt, .companyInfo-loc, .companyInfo-phone{
+	padding: spacing("half");
+  }
+  
+  .companyInfo-loc, .companyInfo-phone{
+	display: inline-block;
+	padding: spacing("half");
+	vertical-align: top;
+  }
+  
+  .companyInfo-mobile{
+	@include breakpoint("medium") {
+		display: none;
+	}
+  }

@@ -1,0 +1,234 @@
+{{#if banners.bottom}}
+    <div class="banners" data-banner-location="bottom">
+        {{#each (limit banners.bottom_metadata 1)}}
+            <div class="banner" data-event-type="promotion" data-entity-id="{{this.id}}" data-name="{{this.banner-name}}" data-position="{{this.location}}" data-name="{{this.banner-name}}">
+                <div data-event-type="promotion-click">
+                    {{{this.content}}}
+                </div>
+            </div>
+        {{/each}}
+    </div>
+{{/if}}
+
+
+<footer class="footer" role="contentinfo">
+    <h2 class="footer-title-sr-only">{{lang 'footer.title'}}</h2>
+    <div class="container">
+        
+        <section class="footer-info{{#if theme_settings.gb-footer-style '==' 2}} footer-two{{/if}}">
+
+            <article class="footerInfo footer-info-col footer-info-col--small" data-section-type="footer-webPages">
+                <h3 class="footer-title footer-info-heading">{{ theme_settings.gb-display-settings-header }}</h3>
+                <div class="footerStore-description">
+                    {{{region name="home_company_info"}}}
+                </div><!--.footerStore-description ends-->
+                <div class="footerStore-details">
+                    <ul>
+          
+                      {{#if theme_settings.bg-display-settings-show-address}}
+                        {{#if settings.address}}
+                        <li>
+                          <div class="storeDetail-icon">
+                            {{> components/gordonbyte/common/address-icon }}
+                          </div><!--.storeDetail-icon end-->
+          
+                          <div class="storeDetail">
+                            <a href="https://www.google.com/maps/place/Home+Billiards/@49.2106034,-123.077679,17z/data=!3m2!4b1!5s0x5486744a5ffccb83:0xb0436e7dc0fc7c8c!4m6!3m5!1s0x5486744a7d7ec56d:0xaeba1ca3947fb4cf!8m2!3d49.2106035!4d-123.0728081!16s%2Fg%2F1tdndyqv" aria-label="Store address: {{ settings.address }}">{{ settings.address }}</a>
+                          </div><!--.storeDetail ends-->
+                        </li>
+                        {{/if}}
+                      {{/if}}
+          
+                      {{#if theme_settings.bg-display-settings-show-phone-number}}
+                        {{#if settings.phone_number}}
+                        <li>
+                          <div class="storeDetail-icon">
+                            {{> components/gordonbyte/common/phone-icon }}
+                          </div>
+          
+                          <div class="storeDetail">
+                            <a href="tel:{{ settings.phone_number }}" aria-label="Store phone number: {{ settings.phone_number }}">{{ settings.phone_number }}</a>
+                          </div>
+                        </li>
+                        {{/if}}
+                      {{/if}}
+          
+                      {{#if theme_settings.bg-display-settings-show-email-address}}
+                      <li>
+                        <div class="storeDetail-icon">
+                            {{> components/gordonbyte/common/email-icon }}
+                        </div>
+          
+                        <div class="storeDetail">
+                          <a href="mailto:{{ theme_settings.bg-display-settings-email-address-value }}" aria-label="Store email address: {{ theme_settings.bg-display-settings-email-address-value }}">{{ theme_settings.bg-display-settings-email-address-value }}</a>
+                        </div>
+                      </li>
+                      {{/if}}
+          
+                    </ul>
+                  </div><!--.footerStore-details ends-->
+            </article>
+
+
+            {{#if theme_settings.bg-display-settings-show-navlinks }}
+            <article class="footer-info-col footer-info-col--small footer-links" data-section-type="footer-webPages">
+                <h3 class="footer-title footer-info-heading">{{lang 'footer.navigate'}}</h3>
+                <ul class="footer-info-list">
+                    {{#each pages}}
+                        <li>
+                            <a href="{{url}}">{{name}}</a>
+                        </li>
+                    {{/each}}
+                    <li>
+                        <a href="{{urls.sitemap}}">{{lang 'sitemap.page_title'}}</a>
+                    </li>
+                </ul>
+            </article>
+            {{/if}}
+
+            {{#if theme_settings.bg-display-settings-show-catlinks }}
+            <article class="footer-info-col footer-info-col--small footer-links" data-section-type="footer-categories">
+                <h3 class="footer-title footer-info-heading">{{lang 'footer.categories'}}</h3>
+                <ul class="footer-info-list">
+                    {{#each categories}}
+                        <li>
+                            <a href="{{url}}">{{name}}</a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </article>
+            {{/if}}
+
+            
+            {{#and theme_settings.shop_by_brand_show_footer shop_by_brand.length}}
+            <article class="footer-info-col footer-info-col--small footer-links" data-section-type="footer-brands">
+                <h3 class="footer-title footer-info-heading">{{lang 'footer.brands'}}</h3>
+                <ul class="footer-info-list">
+                    {{#each shop_by_brand}}
+                        <li>
+                            <a href="{{url}}">{{name}}</a>
+                        </li>
+                    {{/each}}
+                    <li><a href="{{urls.brands}}">{{lang 'common.view_all'}}</a></li>
+                </ul>
+            </article>
+            {{/and}}
+
+            {{#if theme_settings.gb-footer-style '==' 1}}
+            <article class="footer-newsletter footer-info-col" data-section-type="newsletterSubscription">
+                {{#if settings.show_newsletter_box}}
+                    <h3 class="footer-title">{{lang 'newsletter.subscribe'}}</h3>
+                    {{> components/common/subscription-form }}
+                {{/if}}
+            </article>
+            {{/if}}
+
+        </section>
+
+    </div>
+
+    <div class="container">
+        {{{region name="ssl_site_seal--global"}}}
+    </div>
+
+    <div class="footerBottom">
+        <div class="container">
+        {{#if theme_settings.show_powered_by}}
+            <div class="footer-copyright">
+                <p class="powered-by">{{lang 'footer.powered_by'}} <a href="https://www.bigcommerce.com?utm_source=merchant&amp;utm_medium=poweredbyBC" rel="nofollow">BigCommerce</a></p>
+            </div>
+        {{/if}}
+
+        <div class="footerBottom-two">
+            {{> components/common/payment-icons}}
+        </div><!--.footerBottom-two ends-->
+
+        <div class="footerBottom-three">
+            {{> components/common/social-links}}
+        </div><!--.footerBottom-three ends-->
+        </div>
+    </div><!--.footerBottom ends-->
+
+</footer>
+
+<!-- SEO TRACKING FOR REQUEST A QUOTE BUTTON -->
+<!-- SEO TRACKING FOR REQUEST A QUOTE BUTTON -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // ================== RFQ Tracking via MutationObserver ==================
+  const templateFile = "{{template_file}}";
+
+  function attachRFQHandler(button) {
+    if (!button || button.dataset.rfqBound) return;
+    button.dataset.rfqBound = "true";
+
+    button.addEventListener('click', function (e) {
+
+      // Determine placement based on template
+      let placement = '';
+      if (templateFile.includes('product')) placement = 'product_page';
+      else if (templateFile.includes('category')) placement = 'category_page';
+      else if (templateFile.includes('contact')) placement = 'contact_page';
+      else if (templateFile.includes('brand')) placement = 'brand_page';
+      else if (templateFile.includes('search')) placement = 'search_page';
+      else placement = "{{page_type}}";
+
+      // Get product name
+      let productName = 'N/A';
+
+      if (templateFile.includes('product')) {
+        // Product detail page
+        productName = document.querySelector('.productView-title')?.textContent?.trim() || 'N/A';
+      } else {
+        //For Product Cards
+        const link = button.closest('article.card')?.querySelector('h3.card-title a');
+        productName = link?.textContent?.trim() || 'N/A';
+      }
+
+      // Create ISO timestamp string for event
+      const timestamp = new Date().toISOString(); // e.g., "2025-11-13T20:45:30.000Z"
+
+      // Fire GA4 event with timestamp
+      if (typeof gtag === 'function') {
+        gtag('event', 'request_quote_click', {
+          event_category: 'engagement',
+          event_label: productName,
+          placement: placement,
+          timestamp: timestamp
+        });
+        
+      } else {
+        console.warn('[rfq] gtag not defined — GA4 may not be loaded yet.');
+      }
+
+    });
+
+  }
+
+  // Observe for dynamically added RFQ buttons
+  const observer = new MutationObserver((mutationsList) => {
+    mutationsList.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeType !== 1) return;
+
+        if (node.matches?.('[btn-gtag-rfq]')) {
+          attachRFQHandler(node);
+        } else {
+          node.querySelectorAll?.('[btn-gtag-rfq]').forEach(btn => attachRFQHandler(btn));
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, {
+    childList: true,
+    subtree: true
+  });
+
+  // Initial scan
+  document.querySelectorAll('[btn-gtag-rfq]').forEach(btn => attachRFQHandler(btn));
+  // ================== END RFQ Tracking via MutationObserver ==================
+});
+</script>
+<!-- END OF TRACKING REQUEST A QUOTE BUTTON -->
+<!-- END OF TRACKING REQUEST A QUOTE BUTTON -->

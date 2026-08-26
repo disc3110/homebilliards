@@ -1,0 +1,157 @@
+{{#if theme_settings.gb-home-guarantees-enable }}
+<div class="guarantees">
+
+  <ul class="guaranteesSlider">
+    <div data-slick='{
+        "mobileFirst": true,
+        "autoplay": true,
+        "slidesToShow": 1,
+        "slidesToScroll": 1,
+        "responsive": [
+        {
+          "breakpoint": 1201,
+          "settings": {
+            "slidesToShow": {{ theme_settings.gb-home-guarantees-per-row }},
+            "slidesToScroll": {{ theme_settings.gb-home-guarantees-per-row }},
+            "infinite": true,
+            "dots": false
+          }
+        },
+        {
+          "breakpoint": 992,
+          "settings": {
+            "slidesToShow": {{ theme_settings.gb-home-guarantees-per-row }},
+            "slidesToScroll": {{ theme_settings.gb-home-guarantees-per-row }},
+            "infinite": true,
+            "dots": false
+          }
+        },
+        {
+          "breakpoint": 768,
+          "settings": {
+            "slidesToShow": 2,
+            "slidesToScroll": 2,
+            "infinite": true,
+            "dots": false
+          }
+        },
+        {
+          "breakpoint": 501,
+          "settings": {
+            "slidesToShow": 1,
+            "slidesToScroll": 1,
+            "infinite": true,
+            "dots": false
+          }
+        }
+        ],
+        "dots": false,
+        "lazyLoad": "anticipated",
+        "slide": ".slideli",
+        "prevArrow": ".guarantees-prev-arrow",
+        "nextArrow": ".guarantees-next-arrow"
+    }'>
+
+
+        <button aria-label="{{lang 'carousel.arrowAriaLabel'}} {{carousel.slides.length}}" class="guarantees-prev-arrow slick-prev slick-arrow">hero-prev-arrow</button>
+
+        {{#if theme_settings.gb-home-guarantees-per-row ">=" 1}}
+        <li class="slideli addDivider gridCount-{{ theme_settings.gb-home-guarantees-per-row }}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+          <div class="guaranteesHolder">
+            {{#if theme_settings.gb-home-guarantees-enable-icon }}
+            <div class="guaranteesIcon">
+              <strong class="fas {{ theme_settings.gb-home-guarantees-first-icon }}"></strong>
+            </div>
+            {{/if}}
+
+            <div class="guaranteesInfo">
+              <h6 class="guaranteesInfo-top">
+                {{ theme_settings.gb-home-guarantees-first-header }}
+              </h6><!--.guaranteesInfo-top ends-->
+              <div class="guaranteesInfo-bottom">
+                {{ theme_settings.gb-home-guarantees-first-description }}
+              </div><!--.guaranteesInfo-bottom ends-->
+            </div>
+
+            </div>
+        </li>
+        {{/if}}
+
+        {{#if theme_settings.gb-home-guarantees-per-row ">" 1}}
+        <li class="slideli addDivider gridCount-{{ theme_settings.gb-home-guarantees-per-row }}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+          <div class="guaranteesHolder">
+            {{#if theme_settings.gb-home-guarantees-enable-icon }}
+            <div class="guaranteesIcon">
+              <strong class="far {{ theme_settings.gb-home-guarantees-second-icon }}"></strong>
+            </div>
+            {{/if}}
+
+            <div class="guaranteesInfo">
+              <h6 class="guaranteesInfo-top">
+                {{ theme_settings.gb-home-guarantees-second-header }}
+              </h6><!--.guaranteesInfo-top ends-->
+              <div class="guaranteesInfo-bottom">
+                {{ theme_settings.gb-home-guarantees-second-description }}
+              </div><!--.guaranteesInfo-bottom ends-->
+            </div>
+
+            </div>
+        </li>
+        {{/if}}
+
+        {{#if theme_settings.gb-home-guarantees-per-row ">" 2}}
+        <li class="slideli addDivider gridCount-{{ theme_settings.gb-home-guarantees-per-row }}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+          <div class="guaranteesHolder">
+            {{#if theme_settings.gb-home-guarantees-enable-icon }}
+            <div class="guaranteesIcon">
+              <strong class="far {{ theme_settings.gb-home-guarantees-third-icon }}"></strong>
+            </div>
+            {{/if}}
+
+            <div class="guaranteesInfo">
+              <h6 class="guaranteesInfo-top">
+                {{ theme_settings.gb-home-guarantees-third-header }}
+              </h6><!--.guaranteesInfo-top ends-->
+              <div class="guaranteesInfo-bottom">
+                {{ theme_settings.gb-home-guarantees-third-description }}
+              </div><!--.guaranteesInfo-bottom ends-->
+            </div>
+
+            </div>
+        </li>
+        {{/if}}
+
+        {{#if theme_settings.gb-home-guarantees-per-row ">" 3}}
+        <li class="slideli addDivider gridCount-{{ theme_settings.gb-home-guarantees-per-row }}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+
+            <div class="guaranteesHolder">
+
+              {{#if theme_settings.gb-home-guarantees-enable-icon }}
+              <div class="guaranteesIcon">
+                <strong class="far {{ theme_settings.gb-home-guarantees-fourth-icon }}"></strong>
+              </div>
+              {{/if}}
+
+              <div class="guaranteesInfo">
+                <h6 class="guaranteesInfo-top">
+                  {{ theme_settings.gb-home-guarantees-fourth-header }}
+                </h6><!--.guaranteesInfo-top ends-->
+                <div class="guaranteesInfo-bottom">
+                  {{ theme_settings.gb-home-guarantees-fourth-description }}
+                </div><!--.guaranteesInfo-bottom ends-->
+              </div>
+
+            </div><!--.guaranteesHolder ends-->
+        </li>
+        {{/if}}
+
+        <button aria-label="{{lang 'carousel.arrowAriaLabel'}} {{carousel.slides.length}}" class="guarantees-next-arrow slick-next slick-arrow">hero-next-arrow</button>
+
+
+
+    </div><!--.guaranteesSlider ends-->
+
+    </ul>
+
+</div><!--.guarantees ends-->
+{{/if}}

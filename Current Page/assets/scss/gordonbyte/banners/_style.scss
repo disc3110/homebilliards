@@ -1,0 +1,123 @@
+@import "settings";
+
+
+.homeBanners{
+	display: flex;
+	flex-direction: column;
+	padding: spacing("single") 0;
+
+	@include breakpoint("medium") {
+		flex-direction: row;
+	}
+}
+  
+.homeBanner{
+	position: relative;
+	text-align: center;
+	padding: spacing("half");
+	width: 100%;
+  
+	@include breakpoint("large") {
+	  padding: spacing("half") spacing("single");
+	}
+  
+	a{
+	  position: relative;
+	  display: block;
+	  overflow: hidden;
+  
+	  &:hover{
+		box-shadow: 0 0 5px #ccc;
+		opacity: .9;
+  
+		img{
+		  -ms-transform: scale(1.1, 1.1);
+		  -webkit-transform: scale(1.1, 1.1);
+		  transform: scale(1.1, 1.1);
+		}
+	  }
+
+	  	&:after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 0;
+			height: 100%;
+			background-color: rgba(255,255,255,0.1);
+			-webkit-transition: none;
+			-moz-transition: none;
+			transition: none;
+		}
+
+		&:hover:after  {
+			width: 120%;
+			background-color: rgba(255,255,255,0);
+		
+			-webkit-transition: all 0.4s ease-in-out;
+			-moz-transition: all 0.4s ease-in-out;
+			transition: all 0.4s ease-in-out;
+		
+		}
+	}
+
+	a, .homeBanner-img-holder{
+		height: 100%;
+	}
+  
+	img{
+	  min-width: 100%;
+	  min-height: 100%;
+	  @include transition(all, $transition-speed-6, ease-in-out);
+	}
+  
+	.bannerInfo{
+		position: absolute;
+		text-align: center;
+		top: 0;
+		bottom: 0;
+		margin: auto;
+		width: 100%;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+  		justify-content: center;
+	}
+  }
+  
+  .bannerInfo-top{
+	background-color: $home-banners-mini-background-color;
+	border: 1px solid $home-banners-mini-border-color;
+	color: $home-banners-mini-text-color;
+	display: initial;
+	font-size: 1rem;
+	font-weight: 600;
+	padding: spacing("quarter") spacing("single");
+
+	@include breakpoint("medium") {
+		font-size: .8rem;
+	}
+
+	@include breakpoint("large") {
+		font-size: 1rem;
+	}
+  }
+  
+  .bannerInfo-title{
+	font-weight: 600;
+	padding: spacing(half) 0 0;
+  
+	h2{
+	  color: $home-banners-main-text-color;
+	  margin: 0;
+	  font-size: 1.4rem;
+
+	  @include breakpoint("medium") {
+		font-size: 1.2rem;
+	  }
+
+	  @include breakpoint("large") {
+		font-size: 1.4rem;
+	  }
+	}
+}

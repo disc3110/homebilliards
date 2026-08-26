@@ -1,0 +1,290 @@
+
+<nav class="navUser" style="display:none;{{!-- original navUser  --}}">
+	<a href="/contact-us" class="contactLink button">Contact Us</a>
+    <ul class="navUser-section navUser-section--alt">
+        {{#if customer.store_credit.value '>' 0}}
+            <li class="navUser-item">
+                <a class="navUser-action navUser-action--storeCredit"
+                   data-dropdown="storeCredit-dropdown"
+                   data-options="align:bottom"
+                   href="{{urls.cart}}"
+                   aria-label="{{lang 'common.store_credit_overview' credit=customer.store_credit.formatted}}" 
+                >
+                    <span class="navUser-action-divider">
+                        {{lang 'common.store_credit_overview' credit=customer.store_credit.formatted}}
+                    </span>
+                </a>
+                <div class="dropdown-menu" id="storeCredit-dropdown" data-dropdown-content aria-hidden="true">
+                    {{{lang 'common.store_credit' store_credit=customer.store_credit.formatted}}}
+                </div>
+            </li>
+        {{/if}}
+        {{#or (if theme_settings.logo-position '===' 'left') (if theme_settings.logo-position '===' 'center')}}
+        <li class="navUser-item megamen">
+            <button class="navUser-action navUser-action--quickSearch"
+               type="button"
+               id="quick-search-expand"
+               data-search="quickSearch"
+               aria-controls="quickSearch"
+               aria-label="{{lang 'common.search'}}"
+            >
+            {{> components/gordonbyte/common/search-icon }}
+            <span class="headerTitle">{{lang 'common.search'}}</span>
+            </button>
+        </li>
+        {{/or}}
+        {{#if settings.gift_certificates_enabled}}
+            <li class="navUser-item">
+                <a class="navUser-action"
+                   href="{{urls.gift_certificate.purchase}}"
+                   aria-label="{{lang 'common.gift_cert'}}"
+                >
+                {{> components/gordonbyte/common/gift-icon }}
+                    <span class="headerTitle">{{lang 'common.gift_cert'}}
+                </a>
+            </li> 
+        {{/if}}
+
+        <li class="navUser-item navUser-item--account"> 
+            {{#if customer}}
+                <a class="navUser-action"
+                   href="{{urls.account.index}}"
+                   aria-label="{{lang 'common.account'}}"
+                >
+                    {{> components/gordonbyte/common/account-icon }}
+                    <span class="headerTitle">{{lang 'common.account'}}</span>
+                </a>
+                <a class="navUser-action hidden"
+                   href="{{urls.auth.logout}}"
+                   aria-label="{{lang 'common.logout'}}"
+                >
+                    {{lang 'common.logout'}}
+                </a>
+            {{else}}
+                <a class="navUser-action"
+                   href="{{urls.auth.login}}"
+                   aria-label="{{lang 'common.login'}}"
+                >
+                {{> components/gordonbyte/common/account-icon }}
+                <span class="headerTitle">{{lang 'common.login'}}</span>
+                </a>
+                {{#if settings.account_creation_enabled}}
+                    <span class="navUser-or hidden">{{lang 'common.or'}}</span>
+                    <a class="navUser-action hidden"
+                       href="{{urls.auth.create_account}}"
+                       aria-label="{{lang 'common.sign_up'}}"
+                    >
+                        {{lang 'common.sign_up'}}
+                    </a>
+                {{/if}}
+            {{/if}}
+        </li>
+
+        <li class="navUser-item navUser-item--cart">
+            <a class="navUser-action"
+               data-cart-preview
+               data-dropdown="cart-preview-dropdown"
+               data-options="align:right"
+               href="{{urls.cart}}"
+               aria-label="{{lang 'cart.nav_aria_label'}}"
+            >
+                {{> components/gordonbyte/common/cart-icon}}
+                <span class="navUser-item-cartLabel headerTitle">{{lang 'common.cart'}}</span>
+                <span class="countPill cart-quantity"></span>
+            </a>
+
+            <div class="dropdown-menu" id="cart-preview-dropdown" data-dropdown-content aria-hidden="true"></div>
+        </li>
+
+    </ul>
+    {{#or customer (unless settings.hide_price_from_guests)}}
+        <div class="navUser-item--currency">
+            {{> components/common/currency-selector}}
+        </div>
+    {{/or}}
+
+    {{#or (if theme_settings.logo-position '===' 'left') (if theme_settings.logo-position '===' 'center')}}
+    <!-- separate Search style -->
+    <div class="dropdown dropdown--quickSearch" id="quickSearch" aria-hidden="true" tabindex="-1" data-prevent-quick-search-close>
+        <div class="searchHolder">
+        <div class="closeSearch">
+            <button class="closeSearch-btn">Close</button>
+        </div><!--.closeSearch ends-->
+        {{> components/gordonbyte/common/quick-search name='nav-quick-search'}}
+        </div><!--.searchHolder ends-->
+    </div>
+    <!-- separate Search style -->
+    {{/or}}
+</nav>
+
+
+<nav class="container-after-logo">
+    <form class="form" action="/search.php" method="get" role="search">
+        <label class="form-label is-srOnly" for="search_query">Search</label>
+        <input
+            class="form-input"
+            name="search_query"
+            id="search_query"
+            type="text"
+            value="{{forms.search.query}}"
+            placeholder="Look for billiards, games, and lifestyle equipment"
+            aria-label="Search"
+        >
+        <button class="button button--icon" type="submit" aria-label="Submit search">
+            <span>SEARCH</span>
+            <svg role="img" style="width:16px;height:16px;" aria-labelledby="quicksearchicontitle  quicksearchicondesc" height="20" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 413.1 413.1" enable-background="new 0 0 413.1 413.1" xml:space="preserve">
+            	<title id="quicksearchicontitle">Magnifying glass image</title>
+            	<desc id="quicksearchicondesc">Large red circle with a black border</desc>
+            	<path d="M289.5,49.6c-66.1-66.2-173.8-66.2-239.9,0c-66.1,66.1-66.1,173.8,0,239.9c63.9,63.9,166.4,66.1,233,6.6l13.5,13.5
+            									  c-3.4,8.6-1.6,18.7,5.3,25.6l71,71c9.3,9.3,24.5,9.3,33.8,0c9.3-9.3,9.3-24.5,0-33.8l-71-71c-6.9-6.9-17-8.7-25.6-5.3l-13.5-13.5
+            									  C355.6,216,353.4,113.5,289.5,49.6z M69.9,269.3c-55-55-55-144.4,0-199.4c55-55,144.4-55,199.4,0s55,144.4,0,199.4
+            									  S124.9,324.2,69.9,269.3z"></path>
+              </svg>
+        </button>
+        <div class="main-container-search-result">
+            <div class="cls-btn">&times;</div>
+           
+            <div class="container-search-result">
+            </div>
+                        <div class="container-search-fix-category">
+                      {{#if theme_settings.gb-quicksearch-search-featured }}
+                          <div class="searchfeatured-products">
+                              <h3>Featured</h3>
+                              <ul>
+                              {{#each (limit products.featured 5) }}
+                                  <li class="searchproduct-list-aoc">
+                                    <a href="{{url}}">
+                                        {{> components/common/responsive-img
+                                            image=image
+                                            class="custom-image"
+                                            fallback_size=theme_settings.productgallery_size
+                                            lazyload=theme_settings.lazyload_mode
+                                            default_image=theme_settings.default_image_product
+                                        }}
+                                        {{name}}
+                                    </a>
+                                  </li>
+                              {{/each}}
+                              </ul>
+                          </div><!--.searchfeatured-products ends-->
+                      {{/if}}
+                        {{#if theme_settings.gb-quicksearch-search-popular }}
+                              <div class="searchpopular-products">
+                                  <h3>Most Popular</h3>
+                                  <ul>
+                                  {{#each (limit products.top_sellers 5) }}
+                                      <li class="searchproduct-list">
+                                          <a href="{{url}}">
+                                              {{> components/common/responsive-img
+                                                  image=image
+                                                  class="custom-image"
+                                                  fallback_size=theme_settings.productgallery_size
+                                                  lazyload=theme_settings.lazyload_mode
+                                                  default_image=theme_settings.default_image_product
+                                              }}
+                                              {{name}}
+                                          </a>
+                                      </li>
+                                  {{/each}}
+                                  </ul>
+                              </div><!--.searchpopular-products ends-->
+                       {{/if}}
+                        {{#if theme_settings.gb-quicksearch-search-latest }}
+                          <div class="searchlatest-products">
+                            <h3>Latest</h3>
+                            <ul>
+                            {{#each (limit products.new 5) }}
+                                <li class="searchproduct-list">
+                                  <a href="{{url}}">
+                                       {{> components/common/responsive-img
+                                              image=image
+                                              class="custom-image"
+                                              fallback_size=theme_settings.productgallery_size
+                                              lazyload=theme_settings.lazyload_mode
+                                              default_image=theme_settings.default_image_product
+                                        }}
+                                      {{name}}
+                                  </a>
+                                </li>
+                            {{/each}}
+                            </ul>
+                          </div><!--.searchlatest-products ends-->
+                      {{/if}}
+
+            </div>
+        </div>
+    </form>
+    <div class="navUser-cart">
+            <a class="navUser-action"
+               href="/cart.php"
+               aria-label="{{lang 'cart.nav_aria_label'}}"
+            >
+                {{> components/gordonbyte/common/cart-icon}}
+                <span class="label-cart" style="text-transform:capitalize;">My Cart</span> 
+                <span class="countPill cart-quantity"></span>
+            </a>
+
+            <div class="dropdown-menu" id="cart-preview-dropdown" data-dropdown-content aria-hidden="true"></div>
+    </div>
+
+</nav>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const searchInput = document.getElementById("search_query");
+    const resultsBox = document.querySelector(".container-search-result");
+    const resultsBoxMain = document.querySelector(".main-container-search-result");
+    const cls = document.querySelector('.cls-btn');
+    
+    cls.addEventListener('click',function(){
+         resultsBoxMain.style.display = "none";
+        searchInput.value = "";
+    });
+
+    let debounceTimer;
+
+    searchInput.addEventListener("input", function () {
+        const query = searchInput.value.trim();
+
+        // Clear previous timer
+        clearTimeout(debounceTimer);
+
+        // Only proceed if at least 3 characters
+        if (query.length >= 3) {
+     
+            resultsBox.innerHTML = '<div class="loader">Loading...</div>';
+
+            debounceTimer = setTimeout(() => {
+                // Simulate fetch request
+                fetch(`/search.php?search_query=${encodeURIComponent(query)}`)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Network error");
+                        return response.text(); // or .json() based on your actual response
+                    })
+                    .then(data => {
+                        resultsBoxMain.style.display = "block";
+                        resultsBox.innerHTML = `<div class="results">Results for "${query}"</div>`;
+                        // You can display actual results using `data` if needed
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(data, 'text/html');
+                        // Change this selector to match the exact container you want
+                        const results = doc.querySelector('[data-list-name="Search Results"]');
+                       if (results) {
+                            resultsBox.innerHTML = results.innerHTML; 
+                        } else {
+                            resultsBox.innerHTML = `<div class="no-results">No results found for "${query}".</div>`;
+                        }
+                    })
+                    .catch(err => {
+                        console.error("Fetch error:", err);
+                        resultsBox.innerHTML = '<div class="error">Something went wrong</div>';
+                    });
+            }, 500); // Delay execution for 500ms
+        } else {
+            resultsBoxMain.style.display = "none";
+            resultsBox.innerHTML = ""; // Clear results if less than 3 characters
+        }
+    });
+    
+});
+</script>

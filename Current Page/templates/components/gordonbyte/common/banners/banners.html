@@ -1,0 +1,152 @@
+{{#if theme_settings.gb-home-banners-count "!=" 0}}
+<div class="homeBanners">
+    {{#if theme_settings.gb-home-banners-count ">=" 1}}
+    <div class="homeBanner{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+      <a href="{{ theme_settings.gb-home-banners-first-link }}">
+
+        <div class="homeBanner-img-holder{{#unless theme_settings.gb-home-banners-first-upload-photo }}{{#unless theme_settings.gb-theme-demo }} no-img-size{{/unless}}{{/unless}}">
+          {{#if theme_settings.gb-home-banners-first-upload-photo}}
+
+          <img src="{{getImageManagerImage theme_settings.gb-home-banners-first-upload-photo }}"
+                data-sizes="auto"
+                {{#unless lazyload '==' 'disabled'}}
+                    {{#if lazyload '==' 'lazyload+lqip'}}
+                    {{!-- If we want a LQIP, include it as the default srcset (will be overwritten by lazysizes) --}}
+                    srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-first-upload-photo}}"
+                    {{else}}
+                      {{!-- If we don't want a LQIP, use a 1px transparent gif for the stand-in image
+                            This requires no additional network request, so it's fast --}}
+                    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                    {{/if}}
+                {{/unless}}
+
+                {{#unless lazyload '==' 'disabled'}}data-{{/unless}}srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-first-upload-photo use_default_sizes=true }}"
+
+                class="{{#unless lazyload '==' 'disabled'}}lazyload{{/unless}}"
+                {{#if lazyload '==' 'lazyload'}}loading="lazy"{{/if}}
+                >
+          {{ else }}
+            {{#if theme_settings.gb-theme-demo }}
+              {{> components/gordonbyte/demo/img path=theme_settings.gb-theme-name file_name='1banner.jpg' }}
+            {{else}}
+              {{> components/gordonbyte/common/no-img }}
+            {{/if}}
+          {{/if}}
+        </div>
+
+        <div class="bannerInfo">
+
+          {{#if theme_settings.gb-home-banners-enable-mini-text }}
+          <div class="bannerInfo-top {{#if theme_settings.gb-home-banners-mini-background-transparent-color }} transparent-bg{{/if}}">
+            {{ theme_settings.gb-home-banners-first-mini-text }}
+          </div>
+          {{/if}}
+
+          <div class="bannerInfo-title">
+            <h2>{{ theme_settings.gb-home-banners-first-main-text }}</h2>
+          </div>
+        </div><!--.bannerInfo ends-->
+      </a>
+    </div><!--.homeBanner ends-->
+    {{/if}}
+
+
+    {{#if theme_settings.gb-home-banners-count ">" 1}}
+    <div class="homeBanner{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+      <a href="{{ theme_settings.gb-home-banners-second-link }}">
+
+        <div class="homeBanner-img-holder{{#unless theme_settings.gb-home-banners-second-upload-photo }}{{#unless theme_settings.gb-theme-demo }} no-img-size{{/unless}}{{/unless}}">
+          {{#if theme_settings.gb-home-banners-second-upload-photo}}
+            <img src="{{getImageManagerImage theme_settings.gb-home-banners-second-upload-photo }}"
+                  data-sizes="auto"
+                  {{#unless lazyload '==' 'disabled'}}
+                      {{#if lazyload '==' 'lazyload+lqip'}}
+                      {{!-- If we want a LQIP, include it as the default srcset (will be overwritten by lazysizes) --}}
+                      srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-second-upload-photo}}"
+                      {{else}}
+                        {{!-- If we don't want a LQIP, use a 1px transparent gif for the stand-in image
+                              This requires no additional network request, so it's fast --}}
+                      srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                      {{/if}}
+                  {{/unless}}
+
+                  {{#unless lazyload '==' 'disabled'}}data-{{/unless}}srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-second-upload-photo use_default_sizes=true }}"
+
+                  class="{{#unless lazyload '==' 'disabled'}}lazyload{{/unless}}"
+                  {{#if lazyload '==' 'lazyload'}}loading="lazy"{{/if}}
+                  >
+          {{ else }}
+            {{#if theme_settings.gb-theme-demo }}
+              {{> components/gordonbyte/demo/img path=theme_settings.gb-theme-name file_name='2banner.jpg' }}
+            {{else}}
+              {{> components/gordonbyte/common/no-img }}
+            {{/if}}
+          {{/if}}
+        </div>
+
+        <div class="bannerInfo">
+
+          {{#if theme_settings.gb-home-banners-enable-mini-text }}
+          <div class="bannerInfo-top{{#if theme_settings.gb-home-banners-mini-background-transparent-color }} transparent-bg{{/if}}">
+            {{ theme_settings.gb-home-banners-second-mini-text }}
+          </div>
+          {{/if}}
+
+          <div class="bannerInfo-title">
+            <h2>{{ theme_settings.gb-home-banners-second-main-text }}</h2>
+          </div>
+        </div><!--.bannerInfo ends-->
+      </a>
+    </div><!--.homeBanner ends-->
+    {{/if}}
+
+    {{#if theme_settings.gb-home-banners-count ">" 2}}
+    <div class="homeBanner{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+      <a href="{{ theme_settings.gb-home-banners-third-link }}">
+
+        <div class="homeBanner-img-holder{{#unless theme_settings.gb-home-banners-third-upload-photo }}{{#unless theme_settings.gb-theme-demo }} no-img-size{{/unless}}{{/unless}}">
+          {{#if theme_settings.gb-home-banners-third-upload-photo}}
+          <img src="{{getImageManagerImage theme_settings.gb-home-banners-third-upload-photo }}"
+                data-sizes="auto"
+                {{#unless lazyload '==' 'disabled'}}
+                    {{#if lazyload '==' 'lazyload+lqip'}}
+                    {{!-- If we want a LQIP, include it as the default srcset (will be overwritten by lazysizes) --}}
+                    srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-third-upload-photo}}"
+                    {{else}}
+                      {{!-- If we don't want a LQIP, use a 1px transparent gif for the stand-in image
+                            This requires no additional network request, so it's fast --}}
+                    srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw=="
+                    {{/if}}
+                {{/unless}}
+
+                {{#unless lazyload '==' 'disabled'}}data-{{/unless}}srcset="{{getImageManagerImageSrcset theme_settings.gb-home-banners-third-upload-photo use_default_sizes=true }}"
+
+                class="{{#unless lazyload '==' 'disabled'}}lazyload{{/unless}}"
+                {{#if lazyload '==' 'lazyload'}}loading="lazy"{{/if}}
+                >
+          {{ else }}
+          {{#if theme_settings.gb-theme-demo }}
+            {{> components/gordonbyte/demo/img path=theme_settings.gb-theme-name file_name='3banner.jpg' }}
+          {{else}}
+            {{> components/gordonbyte/common/no-img }}
+          {{/if}}
+          {{/if}}
+        </div>
+
+        <div class="bannerInfo">
+
+          {{#if theme_settings.gb-home-banners-enable-mini-text }}
+          <div class="bannerInfo-top {{#if theme_settings.gb-home-banners-mini-background-transparent-color }} transparent-bg{{/if}}">
+            {{ theme_settings.gb-home-banners-third-mini-text }}
+          </div>
+          {{/if}}
+
+          <div class="bannerInfo-title">
+          <h2>{{ theme_settings.gb-home-banners-third-main-text }}</h2>
+          </div>
+        </div><!--.bannerInfo ends-->
+      </a>
+    </div><!--.homeBanner ends-->
+    {{/if}}
+</div><!--.homeBanners ends-->
+{{/if}}

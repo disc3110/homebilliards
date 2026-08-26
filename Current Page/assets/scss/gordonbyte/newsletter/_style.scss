@@ -1,0 +1,51 @@
+@import "settings";
+
+.newslettersub{
+	position: relative;
+	background-color: $newsletter-background-color;
+	color: $newsletter-description-color;
+	padding: spacing("single") 0 0;
+	text-align: center;
+	left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    width: 100vw;
+  
+	.page-heading{
+	  color: $newsletter-title-color;
+	  margin-bottom: spacing("quarter");
+  
+	  &::after{
+		background-color: $container-border-global-color-base;
+	  }
+	}
+  }
+  
+  .newletterHolder{
+	margin: auto;
+
+	.form{
+		margin: 0;
+	}
+  
+	@include breakpoint("small") {
+	  width: 70%;
+	}
+  
+	.form-input{
+	  color: $newsletter-fieldtext-color;
+	  background-color: $newsletter-fieldtext-background-color;
+	}
+  
+	.button{
+	  color: $newsletter-button-color;
+	  background-color: $newsletter-button-background-color;
+	  text-transform: uppercase;
+  
+	  &:hover{
+		color: $newsletter-button-text-hover-color;
+		background-color: $newsletter-button-background-hover-color;
+	  }
+	}
+  }

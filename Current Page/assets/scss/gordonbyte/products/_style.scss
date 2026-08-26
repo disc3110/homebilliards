@@ -1,0 +1,199 @@
+.productPage-view{
+	margin-bottom: spacing("double");
+}
+
+// =============================================================================
+// PRODUCT VIEW (CSS)
+// =============================================================================
+
+
+// Product view layout
+// -----------------------------------------------------------------------------
+
+.productView {
+    @include grid-row($behavior: "nest");
+    margin-left: -(spacing("base"));
+    margin-right: -(spacing("base"));
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    @include breakpoint("medium") {
+        display: block;
+    }
+
+    .modal & {
+        padding-bottom: 0;
+        padding-top: 0;
+    }
+
+    .productView-title{
+      margin-top: 0;
+      margin-bottom: spacing("half");
+    }
+
+    .productView-rating{
+      margin-bottom: spacing("half");
+    }
+}
+
+.productView--quickView {
+    .socialLinks-item--print {
+        display: none;
+    }
+}
+
+.productView-images {
+    @include grid-column(12);
+    padding-left: spacing("base");
+    padding-right: spacing("base");
+
+    @include breakpoint("medium") {
+        width: grid-calc(6, $total-columns);
+    }
+}
+
+.productView-details {
+    @include grid-column(12);
+    padding-left: spacing("base");
+    padding-right: spacing("base");
+
+    @include breakpoint("medium") {
+        clear: right;
+        float: right;
+        width: grid-calc(6, $total-columns);
+    }
+
+    .productView--quickView & {
+        position: relative;
+    }
+
+}
+
+.productView{
+	
+	.form-option-variant--color, .form-option-variant--pattern{
+		height: 30px;
+		width: 30px;
+	}
+  .productView-options{
+    margin-bottom: spacing("quarter");
+
+    .form-action, .form-wishlist{
+      @include breakpoint("large") {
+            width: 48%;
+      }
+    }
+    #form-action-addToCart, .dropdown-menu-button{
+      width: 100%;
+    }
+
+    #wishlist-dropdown{
+      padding-right: 0;
+
+      input, a{
+        text-align: left;
+      }
+    }
+  }
+
+  .productView .productView-options .form-action{
+	  width: 100%;
+  }
+
+  .socialLinks{
+    text-align: center;
+  }
+}
+
+.productView-description {
+    @include grid-column(12);
+    padding-left: spacing("base");
+    padding-right: spacing("base");
+    position: relative;
+    z-index: 1;
+
+    .productView-title {
+        border-bottom: container("border");
+        margin-bottom: spacing("base");
+        padding-left: spacing("base");
+        padding-right: spacing("base");
+    }
+
+    .productView-description {
+        @include breakpoint("medium") {
+            clear: both;
+            float: none;
+            width: 100%;
+        }
+    }
+}
+
+
+.productView{
+  .productView-details{
+      .saleHolder, .priceHolder{
+        padding: 0;
+
+        @include breakpoint("medium") {
+          text-align: left;
+          //width: 100%;
+        }
+	  }
+	  
+	.add-to-cart-buttons{
+		padding-left: 0;
+
+		.form-action{
+			width: 100%;
+		}
+	}
+  }
+}
+
+.productView-product, .productView-info{
+  text-align: center;
+
+  @include breakpoint("medium") {
+    text-align: left;
+  }
+}
+
+.productView-info{
+  *{
+    float: none;
+    @include breakpoint("medium") {
+      float: left;
+    }
+  }
+}
+
+.productView-info-name{
+  color: $form-label-small-color;
+  font-weight: 600;
+}
+
+.productView-info > :first-child{
+  margin-top: 0;
+}
+
+.productView-info-value{
+  margin-bottom: 0;
+}
+
+.productPage-view{
+  margin-bottom: spacing("single");
+}
+
+.productView-details.product-data{
+	order: initial;
+}
+
+.productView-img-container::after{
+	padding-bottom: 100%;
+}
+
+.socialLinks .icon{
+	width: 2rem;
+}

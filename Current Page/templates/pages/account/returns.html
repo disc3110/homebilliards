@@ -1,0 +1,30 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+---
+
+{{#partial "page"}}
+
+{{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+<h1 class="page-heading">{{lang 'account.returns.heading' }}</h1>
+{{> components/gordonbyte/account/navigation account_page='returns'}}
+
+<div class="account account--fixed">
+    <div class="account-body">
+        <section class="account-content">
+            {{#if customer.returns}}
+                {{> components/account/returns-list returns=customer.returns}}
+            {{else}}
+                {{> components/common/alert/alert-info (lang 'account.returns.none')}}
+            {{/if}}
+        </section>
+    </div>
+</div>
+
+{{/partial}}
+{{> layout/base}}

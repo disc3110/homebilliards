@@ -1,0 +1,69 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+---
+
+{{#partial "page"}}
+
+{{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+
+<section class="page">
+    {{#unless theme_settings.hide_contact_us_page_heading }}
+        <h1 class="page-heading">{{page.title}}</h1>
+    {{/unless}}
+
+    {{#if page.sub_pages}}
+        <nav class="navBar navBar--sub">
+            <ul class="navBar-section account-navigation">
+                {{#each page.sub_pages}}
+                    <li class="navBar-item"><a class="navBar-action" href="{{url}}">{{title}}</a></li>
+                {{/each}}
+            </ul>
+        </nav>
+    {{/if}}
+
+    <div id="contact-us-page" class="page-content page-content--centered">
+        {{#if forms.contact.success}}
+            <div id="contact-us-success">{{{lang 'forms.contact_us.successful' shopPath=urls.home}}}</div>
+        {{else}}
+            <p>{{{page.content}}}</p>
+            {{> components/page/contact-us-form}}
+        {{/if}}
+
+    </div>
+
+</section>
+
+{{/partial}}
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const textarea = document.getElementById('contact_question');
+    
+      if (!textarea) {
+        console.warn('Textarea with id "contact_question" not found.');
+        return; // Stop if the textarea isn't found
+      }
+    
+      const savedData = JSON.parse(localStorage.getItem('request_quote_data')) || [];
+    
+      if (!Array.isArray(savedData) || savedData.length === 0) {
+        console.warn('No saved data found in localStorage.');
+        return;
+      }
+    
+      let output = '';
+      savedData.forEach(item => {
+        output += `${item.label} ${item.value}\n`;
+      });
+    
+      textarea.value = output.trim(); 
+
+    });
+
+</script>
+{{> layout/base}}

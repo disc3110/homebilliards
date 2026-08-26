@@ -111,6 +111,65 @@ function examples(products, predicate, limit = 15) {
     .map(({ id, name, sku }) => ({ id, name, sku }));
 }
 
+function measureCompleteness(products, brandById) {
+  return {
+    total: products.length,
+    visible: count(products, (product) => product.is_visible),
+    hidden: count(products, (product) => !product.is_visible),
+    missingSku: count(products, (product) => !isPresent(product.sku)),
+    missingBrand: count(
+      products,
+      (product) => !brandById.has(product.brand_id),
+    ),
+    noCategory: count(products, (product) => product.categories.length === 0),
+    multipleCategories: count(
+      products,
+      (product) => product.categories.length > 1,
+    ),
+    missingDescription: count(
+      products,
+      (product) => !isPresent(product.description),
+    ),
+    missingPrice: count(products, (product) => !isPresent(product.price)),
+    missingPriceAndHidden: count(
+      products,
+      (product) => !isPresent(product.price) && product.is_price_hidden,
+    ),
+    onSale: count(products, (product) => product.sale_price > 0),
+    priceHidden: count(products, (product) => product.is_price_hidden),
+    preorderOnly: count(products, (product) => product.is_preorder_only),
+    missingAnyIdentifier: count(
+      products,
+      (product) =>
+        !isPresent(product.gtin) &&
+        !isPresent(product.upc) &&
+        !isPresent(product.mpn),
+    ),
+    missingPageTitle: count(
+      products,
+      (product) => !isPresent(product.page_title),
+    ),
+    missingMetaDescription: count(
+      products,
+      (product) => !isPresent(product.meta_description),
+    ),
+    missingWeight: count(products, (product) => !isPresent(product.weight)),
+    missingAnyDimension: count(
+      products,
+      (product) =>
+        !isPresent(product.width) ||
+        !isPresent(product.height) ||
+        !isPresent(product.depth),
+    ),
+    inventoryTracking: Object.fromEntries(
+      ["none", "product", "variant"].map((mode) => [
+        mode,
+        count(products, (product) => product.inventory_tracking === mode),
+      ]),
+    ),
+  };
+}
+
 async function main() {
   const environment = parseEnv(
     await readFile(path.join(ROOT, "apps", "backend", ".env"), "utf8"),
@@ -163,14 +222,20 @@ async function main() {
   ].join(",");
 
   console.log("Fetching the complete lightweight product index...");
-  const [products, brands, sample] = await Promise.all([
+  const [products, variants, brands, sample] = await Promise.all([
     fetchAll(
       baseUrl,
       `/catalog/products?include_fields=${fields}`,
       token,
       "Products",
     ),
-    fetchAll(baseUrl, "/catalog/brands?", token, "Brands"),
+    fetchAll(
+      baseUrl,
+      "/catalog/variants?include_fields=id,product_id,sku,price,calculated_price,sale_price,retail_price,weight,width,height,depth,purchasing_disabled,image_url,upc,mpn,gtin,inventory_level,option_values",
+      token,
+      "Variants",
+    ),
+    fetchAll(baseUrl, "/catalog/brands", token, "Brands"),
     readFile(SAMPLE_FILE, "utf8").then(JSON.parse),
   ]);
 
@@ -181,6 +246,13 @@ async function main() {
     categories.map((category) => [category.id, category]),
   );
   const brandById = new Map(brands.map((brand) => [brand.id, brand.name]));
+  const productById = new Map(products.map((product) => [product.id, product]));
+  const variantsByProductId = new Map();
+  for (const variant of variants) {
+    const items = variantsByProductId.get(variant.product_id) ?? [];
+    items.push(variant);
+    variantsByProductId.set(variant.product_id, items);
+  }
 
   const categoryUsage = categories
     .map((category) => ({
@@ -232,61 +304,87 @@ async function main() {
     generatedAt: new Date().toISOString(),
     scope: {
       totalProducts: products.length,
+      totalVariants: variants.length,
       detailedSampleProducts: detailedProducts.length,
       brands: brands.length,
       categories: categories.length,
     },
     store: sample.store,
-    completeness: {
-      visible: count(products, (product) => product.is_visible),
-      hidden: count(products, (product) => !product.is_visible),
-      missingSku: count(products, (product) => !isPresent(product.sku)),
-      missingBrand: count(
+    completeness: measureCompleteness(products, brandById),
+    visibleCompleteness: measureCompleteness(
+      products.filter((product) => product.is_visible),
+      brandById,
+    ),
+    skuCoverage: {
+      productsWithoutParentSku: count(
         products,
-        (product) => !brandById.has(product.brand_id),
+        (product) => !isPresent(product.sku),
       ),
-      noCategory: count(products, (product) => product.categories.length === 0),
-      multipleCategories: count(
+      productsWithoutAnySku: count(
         products,
-        (product) => product.categories.length > 1,
+        (product) =>
+          !isPresent(product.sku) &&
+          !(variantsByProductId.get(product.id) ?? []).some((variant) =>
+            isPresent(variant.sku),
+          ),
       ),
-      missingDescription: count(
+      visibleProductsWithoutAnySku: count(
         products,
-        (product) => !isPresent(product.description),
+        (product) =>
+          product.is_visible &&
+          !isPresent(product.sku) &&
+          !(variantsByProductId.get(product.id) ?? []).some((variant) =>
+            isPresent(variant.sku),
+          ),
       ),
-      missingPrice: count(products, (product) => !isPresent(product.price)),
-      onSale: count(products, (product) => product.sale_price > 0),
-      priceHidden: count(products, (product) => product.is_price_hidden),
-      preorderOnly: count(products, (product) => product.is_preorder_only),
+      variantsMissingSku: count(variants, (variant) => !isPresent(variant.sku)),
+      duplicateVariantSkuGroups: duplicates(
+        variants.map((variant) => ({
+          ...variant,
+          name: productById.get(variant.product_id)?.name ?? "Unknown product",
+        })),
+        (variant) => variant.sku,
+      ),
+    },
+    variantCoverage: {
+      productsWithMultipleVariants: count(
+        products,
+        (product) => (variantsByProductId.get(product.id)?.length ?? 0) > 1,
+      ),
+      variantsWithOptions: count(
+        variants,
+        (variant) => (variant.option_values?.length ?? 0) > 0,
+      ),
+      purchasingDisabled: count(
+        variants,
+        (variant) => variant.purchasing_disabled,
+      ),
       missingAnyIdentifier: count(
-        products,
-        (product) =>
-          !isPresent(product.gtin) &&
-          !isPresent(product.upc) &&
-          !isPresent(product.mpn),
+        variants,
+        (variant) =>
+          !isPresent(variant.gtin) &&
+          !isPresent(variant.upc) &&
+          !isPresent(variant.mpn),
       ),
-      missingPageTitle: count(
-        products,
-        (product) => !isPresent(product.page_title),
-      ),
-      missingMetaDescription: count(
-        products,
-        (product) => !isPresent(product.meta_description),
-      ),
-      missingWeight: count(products, (product) => !isPresent(product.weight)),
       missingAnyDimension: count(
-        products,
-        (product) =>
-          !isPresent(product.width) ||
-          !isPresent(product.height) ||
-          !isPresent(product.depth),
+        variants,
+        (variant) =>
+          !isPresent(variant.width) ||
+          !isPresent(variant.height) ||
+          !isPresent(variant.depth),
       ),
-      inventoryTracking: Object.fromEntries(
-        ["none", "product", "variant"].map((mode) => [
-          mode,
-          count(products, (product) => product.inventory_tracking === mode),
-        ]),
-      ),
+      optionNames: Object.entries(
+        variants
+          .flatMap((variant) => variant.option_values ?? [])
+          .reduce((counts, option) => {
+            const name =
+              option.option_display_name ?? option.label ?? "Unknown";
+            counts[name] = (counts[name] ?? 0) + 1;
+            return counts;
+          }, {}),
+      )
+        .map(([name, variantCount]) => ({ name, variantCount }))
+        .sort((left, right) => right.variantCount - left.variantCount),
     },
     duplicates: {
       skuGroups: duplicates(products, (product) => product.sku),

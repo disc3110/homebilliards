@@ -1,0 +1,21 @@
+{{#if theme_settings.hide_content_navigation }}
+
+    <div class="main-nav-menuList">
+      <ul>
+        {{#each pages}}
+     
+             <li class="navPages-item navPages-item-page" test>
+                 <a class="navPages-action{{#if name '==' ../page.title}} activePage{{/if}}"
+                    href="{{url}}"
+                    aria-label="{{name}}"
+                 >
+				 	{{first (split name ' - ')}}
+                 </a>
+
+             </li>
+          
+         {{/each}}
+       </ul>
+    </div><!--.main-nav-menuList ends-->
+
+{{/if}}

@@ -1,0 +1,44 @@
+@import "settings";
+
+.brands-selections{
+	position: relative;
+	left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+	margin-right: -50vw;
+	padding: 0 spacing("single");
+    width: 100vw;
+
+
+	img{
+		max-width: 160px;
+		margin: auto;
+	}
+
+	.brands-selections-holder{
+		margin-bottom: 0;
+
+		.brands-prev-arrow{
+			top: 80px;
+			left: 0;
+		}
+
+		.brands-next-arrow{
+			top: 80px;
+			right: 0;
+		}
+		
+		a{
+			display: block;
+			padding: spacing("single");
+		}
+	}
+
+	.brand-icon{
+		margin: auto;
+	}
+}
+
+.brands-section{
+	padding: spacing("single") 0 0;
+}

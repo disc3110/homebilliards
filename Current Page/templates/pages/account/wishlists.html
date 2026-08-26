@@ -1,0 +1,21 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+---
+
+{{#partial "page"}}
+{{#if settings.show_wishlist}}
+    <div class="account account--fixedLarge">
+        {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+        <h2 class="page-heading">{{lang 'account.wishlists.heading' }}</h2>
+        {{> components/gordonbyte/account/navigation account_page='wishlists'}}
+        {{> components/account/wishlist-list}}
+    </div>
+{{/if}}
+{{/partial}}
+{{> layout/base}}

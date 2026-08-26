@@ -1,0 +1,389 @@
+@import "settings";
+
+.footer{
+  padding-bottom: 0 !important;
+}
+
+
+.footerBottom{
+  color: $footer-text-color;
+  padding: 5px 0 3px;
+  border-top: 1px solid $container-border-global-color-base;
+
+  .container{
+    display: flex;
+    flex-direction: column;
+
+    @include breakpoint("medium") {
+      flex-direction: row;
+    }
+
+    & > *{
+      width: 100%;
+    }
+  }
+
+}
+
+.footer-info-heading {
+    color: $footer-heading-fontColor;
+    font-size: 1rem;
+    margin: 0 0 spacing("quarter");
+    text-transform: uppercase;
+}
+
+.footer-info-list {
+    list-style: none;
+    margin-left: 0;
+
+    a {
+        color: $footer-link-color;
+        text-decoration: none;
+        @include transition(all, $transition-speed-3, ease-in-out);
+
+        // scss-lint:disable NestingDepth
+        &:hover {
+          padding-left: 5px;
+          color: $footer-link-hover-color;
+        }
+        // scss-lint:enable NestingDepth
+    }
+}
+
+
+.footerStore-details{
+  ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      text-align: center;
+      margin: 10px 0;
+
+      @include breakpoint("small") {
+        justify-content: left;
+        text-align: left;
+      }
+
+      @include breakpoint("medium") {
+        flex-direction: row;
+        
+      }
+
+      a{
+        color: $footer-link-color;
+      }
+
+      .storeDetail-icon, .storeDetail{
+        display: inline-block;
+      }
+      .storeDetail-icon{
+        text-align: center;
+        width: 20px;
+        margin-right: 5px;
+
+        svg{
+          fill: $footer-text-color;
+          vertical-align: middle;
+        }
+      }
+    }
+  }
+}
+
+.footer-info{
+  .footer-info-col{
+    color: $footer-text-color;
+    margin-bottom: 2rem;
+  }
+}
+
+
+.footer .socialLinks .icon svg{
+  fill: $footer-text-color;
+}
+
+.footer-copyright {
+    text-align: center;
+    order: 3;
+
+    @include breakpoint("medium") {
+      text-align: left;
+      order: 1;
+    }
+
+    > .powered-by {
+      color: $footer-text-color;
+        font-size: fontSize("tiny");
+        margin: 0;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        display: flex;
+
+        @include breakpoint("medium") {
+          justify-content: left;
+        }
+    }
+
+    > .paypal-credit {
+      color: $footer-text-color;
+        font-size: fontSize("tiny");
+        margin: 1em 0 2em;
+    }
+
+    a {
+        //color: stencilColor("color-textSecondary");
+        color: $footer-text-color;
+        text-decoration: none;
+
+        // scss-lint:disable NestingDepth
+        &:hover {
+            //color: stencilColor("color-textSecondary--hover");
+        }
+        // scss-lint:enable NestingDepth
+    }
+}
+
+.socialLinks .socialLinks-item{
+  margin-bottom: 0;
+}
+
+.footer-payment-icons {
+    height: remCalc(40);
+    margin-top: 0;
+    text-align: center;
+
+
+    .footer-payment-icon {
+        height: 65%;
+        margin: spacing("quarter");
+        vertical-align: middle;
+        width: remCalc(40);
+    }
+
+    svg {
+        fill: $footer-text-color;
+    }
+}
+
+.footerBottom-two{
+  order: 2;
+
+  @include breakpoint("medium") {
+    order: 2;
+  }
+}
+
+.footerBottom-three{
+  text-align: center;
+  overflow: hidden;
+  order: 1;
+
+  @include breakpoint("medium") {
+    text-align: right;
+    order: 3;
+  }
+
+  li{
+    padding: 0 5px;
+  }
+}
+
+
+
+.footer {
+  background-color: $footer-background;
+  border-top: container("border");
+  color: $footer-text-color;
+  padding: spacing("double") 0 spacing("half");
+  position: relative;
+
+  a{
+    color: $footer-link-color;
+
+    &:hover{
+      color: $footer-link-hover-color;
+    }
+  }
+}
+
+.footer-title-sr-only {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.footer-title{
+position: relative;
+padding: 0 0 spacing("quarter") 0;
+margin-top: 0;
+font-size: 1rem;
+font-weight: 600;
+text-transform: uppercase;
+color: $footer-header-color;
+
+&::after{
+  background-color: $footer-header-color;
+  content: "";
+  height: 1px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 40px;
+
+  @include breakpoint("small") {
+    left: 0;
+    margin: 0 auto 0 0;
+  }
+}
+}
+
+.footer-info {
+  @include grid-row($behavior: nest);
+  font-size: 0; // 1
+}
+
+.footer-info-col {
+  @include grid-column(12);
+  display: inline-block;
+  float: none;
+  font-size: fontSize("base"); // 2
+  margin-bottom: spacing("double");
+  text-align: center;
+  vertical-align: top;
+  // TODO: specifically use vendor only for IE11 since overflow-wrap is not supported here
+  -ms-word-break: break-all;
+  overflow-wrap: break-word;
+  @include breakpoint("small") {
+      text-align: left;
+      width: width("6/12");
+  }
+
+  @include breakpoint("medium") {
+      width: width("4/12");
+  }
+
+  > :first-child {
+      margin-top: 0;
+  }
+
+  > :last-child {
+      margin-bottom: 0;
+  }
+}
+
+.footer-info-col--small {
+  @include breakpoint("medium") {
+      width: width("2/12");
+  }
+}
+
+.footer-info-col--social {
+  width: 100%;
+}
+
+.footer-info-col--left {
+  @include breakpoint("small") {
+      padding: 0;
+  }
+}
+
+.footer-info-col--right {
+  @include breakpoint("small") {
+      left: 50%;
+      position: inherit;
+      width: 50%;
+  }
+
+  @include breakpoint("medium") {
+      left: 0;
+      padding: 0;
+      text-align: right;
+      width: 100%;
+  }
+}
+
+.footer-newsletter .footer-info-heading{
+  display: none;
+}
+
+
+.footer{
+  .footer-info{
+    
+    .footerInfo .footer-title{
+      &:after{
+        right: auto;
+      }
+    }
+
+    .footerStore-details ul li{
+      text-align: left;
+      justify-content: left;
+    }
+
+    .footerInfo.footer-info-col{
+      text-align: left;
+      width: 100%;
+
+      @include breakpoint("medium") {
+        width: 25%;
+      }
+    }
+
+    .footer-info-col{
+      &.footer-links{
+        width: 50%;
+
+        @include breakpoint("small") {
+          width: 33.33%;
+        }
+
+        @include breakpoint("medium") {
+          width: 15%;
+        }
+      }
+    }
+
+    .footer-newsletter{
+      @include breakpoint("medium") {
+        width: 30%;
+      }
+    }
+  }
+}
+
+
+
+.footer {
+  .footer-info{
+    @include breakpoint("medium") {
+      display: flex;
+    }
+  }
+
+  
+  .footer-links{
+    text-align: left;
+
+    & h3:after{
+      right: auto;
+    }
+  }
+
+.footer-info.footer-two .footer-info-col{
+  @include breakpoint("medium") {
+    width: 100%;
+  }
+}
+}

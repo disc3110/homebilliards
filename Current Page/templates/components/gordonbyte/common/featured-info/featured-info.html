@@ -1,0 +1,42 @@
+{{#if theme_settings.gb-home-enable-full-banner }}
+<div class="homeBannersFull homeBannerFull-{{ theme_settings.gb-home-full-banners-text-position}}{{#if theme_settings.gb-animation-enable }} gb-animate-me animate__animated{{/if}} {{#if theme_settings.gb-home-enable-full-banner-width }} full-w{{/if}}" {{#if theme_settings.gb-animation-enable }}data-animation="fadeIn"{{/if}}>
+  <div class="container">
+
+
+    <div class="homeBannerFull">
+      <a href="{{ theme_settings.gb-home-full-banners-image-link }}">
+
+        <div class="homeBannerFull-img-holder{{#unless theme_settings.gb-home-full-banners-upload-photo }}{{#unless theme_settings.gb-theme-demo }} no-img-size{{/unless}}{{/unless}}">
+          {{#if theme_settings.gb-home-full-banners-upload-photo }}
+
+          <img src="{{getImageManagerImage theme_settings.gb-home-full-banners-upload-photo }}">
+
+          {{ else }}
+          {{#if theme_settings.gb-theme-demo }}
+            {{> components/gordonbyte/demo/img path=theme_settings.gb-theme-name file_name='-full-banner.jpg' }}
+          {{else}}
+            {{> components/gordonbyte/common/no-img }}
+          {{/if}}
+          {{/if}}
+        </div>
+
+        <div class="bannerFullInfo">
+
+          {{#if theme_settings.gb-home-full-banner }}
+          <div class="bannerFullInfo-top {{#if theme_settings.gb-home-full-banner-mini-background-transparent-color }} transparent-bg{{/if}}">
+            {{ theme_settings.gb-home-full-banners-mini-text }}
+          </div>
+          {{/if}}
+
+          <div class="bannerFullInfo-title">
+            <h2>{{ theme_settings.gb-home-full-banners-main-text }}</h2>
+          </div>
+        </div><!--.bannerInfo ends-->
+      </a>
+    </div><!--.homeBanner ends-->
+
+
+
+  </div>
+</div><!--.homeBanners ends-->
+{{/if}}

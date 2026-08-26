@@ -1,0 +1,22 @@
+---
+products:
+    new:
+        limit: 50
+    featured:
+        limit: 50
+    top_sellers:
+        limit: 50
+---
+
+{{#partial "page"}}
+    {{> components/common/breadcrumbs breadcrumbs=breadcrumbs}}
+    <h2 class="page-heading">{{lang 'account.payment_methods.heading' }}</h2>
+    {{> components/gordonbyte/account/navigation account_page='payment_methods'}}
+
+    <div class="account account--fixedLarge">
+        <div class="account-body">
+            {{> components/account/payment-methods-list }}
+        </div>
+    </div>
+{{/partial}}
+{{> layout/base}}
