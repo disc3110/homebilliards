@@ -626,8 +626,8 @@ const fixtures: Array<{
         path: "/billiards/pool-tables",
       },
       productType: "INSTALL_REQUIRED",
-      brand: "Legacy",
-      name: "Legacy Austin Pool Table",
+      brand: "California House",
+      name: "California House Austin Pool Table",
       sku: null,
       badges: ["Builder preview"],
       price: {
@@ -650,9 +650,9 @@ const fixtures: Array<{
         disabled: false,
       },
       content: {
-        name: "Legacy Austin Pool Table",
-        searchTitle: "Legacy Austin Pool Table",
-        feedTitle: "Legacy Austin Pool Table",
+        name: "California House Austin Pool Table",
+        searchTitle: "California House Austin Pool Table",
+        feedTitle: "California House Austin Pool Table",
         shortDescription:
           "The Austin fixture powers the visual builder for size, finish, cloth, add-ons, and planning. It is not mapped to a live parent product.",
         longDescriptionHtml:
@@ -853,9 +853,9 @@ const fixtures: Array<{
         message:
           "Review the completed configuration with the Home Billiards team.",
       },
-      metaTitle: "Legacy Austin Pool Table",
+      metaTitle: "California House Austin Pool Table",
       metaDescription:
-        "Preview the configurable Legacy Austin Pool Table builder. Live parent mapping, product claims, price, options, and availability require approval.",
+        "Preview the configurable California House Austin Pool Table builder. Live parent mapping, product claims, price, options, and availability require approval.",
     }),
   },
 ];

@@ -24,6 +24,7 @@ Jordan's directory is the authority for the intended public taxonomy. BigCommerc
 - `pilot-products.md`: representative products and journeys for the first vertical slice.
 - `decision-log.md`: locked directions, proposals, and approvals still required.
 - `step-2-contracts.md`: canonical storefront contracts, option behavior, publishing gates, adapter boundary, and preview fixtures.
+- `step-3-visual-system.md`: implemented visual system, shared shell, Demo/Jordan authority order, preview boundaries, and visual approval gate.
 
 ## Control model
 

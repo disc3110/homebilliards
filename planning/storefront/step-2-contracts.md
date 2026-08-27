@@ -80,7 +80,7 @@ Install-required pool tables still require 100% manual review. Passing the schem
 | Furniture / delivery | Whistler Indoor Table Tennis Table | Visible price plus delivery review                        |
 | Install required     | Olhausen Canadiana Pool Table      | Guided installation path                                  |
 | Quote only           | Olhausen Custom Augusta Pool Table | Hidden price and Request Quote                            |
-| Configurable parent  | Legacy Austin Pool Table           | Variant, modifier, add-on, quote, and information options |
+| Configurable parent  | California House Austin Pool Table | Variant, modifier, add-on, quote, and information options |
 
 All six fixtures use `source: FIXTURE`, remain in `DRAFT`, contain explicit blockers, and use representative values. They must not be published or treated as verified BigCommerce data.
 
